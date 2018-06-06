@@ -1,11 +1,12 @@
-/**
- * <copyright>
+/*********************************************************************
+ * Copyright (c) 2009, 2012 SpringSource, a division of VMware, Inc.
  *
- * TODO Copyright
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
  *
- * </copyright>
- *
- */
+ * SPDX-License-Identifier: EPL-2.0
+**********************************************************************/
 
 package org.eclipse.virgo.ide.runtime.internal.ui.editor;
 
@@ -110,23 +111,23 @@ public class Messages extends NLS {
 
     public static String ServerDeployEditorSection_description;
 
-	public static String ServerDeployEditorSection_invalid_port_form_error;
+    public static String ServerDeployEditorSection_invalid_port_form_error;
 
-	public static String ServerDeployEditorSection_invalid_port_save_message;
+    public static String ServerDeployEditorSection_invalid_port_save_message;
 
-	public static String ServerDeployEditorSection_invalid_timeout_form_error;
+    public static String ServerDeployEditorSection_invalid_timeout_form_error;
 
-	public static String ServerDeployEditorSection_invalid_timeout_save_message;
+    public static String ServerDeployEditorSection_invalid_timeout_save_message;
 
-	public static String ServerDeployEditorSection_port_label;
+    public static String ServerDeployEditorSection_port_label;
 
-	public static String ServerDeployEditorSection_timeout_label;
+    public static String ServerDeployEditorSection_timeout_label;
 
-	public static String ServerDeployEditorSection_timeout_too_small_form_error;
+    public static String ServerDeployEditorSection_timeout_too_small_form_error;
 
-	public static String ServerDeployEditorSection_title;
+    public static String ServerDeployEditorSection_title;
 
-	public static String StartupEditorSection_description;
+    public static String StartupEditorSection_description;
 
     public static String StartupEditorSection_maxpermsize_label;
 

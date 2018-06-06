@@ -7,3 +7,4 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.help,
  org.eclipse.help.ui
 Bundle-Vendor: %providerName
+Bundle-Localization: plugin

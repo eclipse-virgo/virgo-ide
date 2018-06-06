@@ -1,3 +1,12 @@
+/*********************************************************************
+ * Copyright (c) 2015 GianMaria Romanato
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+**********************************************************************/
 
 package org.eclipse.virgo.ide.ui.internal.actions;
 
@@ -66,8 +75,8 @@ public class ConvertPDE2VirgoProject extends AbstractConvertAction implements IO
 
     @Override
     protected boolean showConfirmationDialog() {
-        MessageDialog dlg = new MessageDialog(this.part.getSite().getShell(), Messages.ConvertPDE2VirgoProject_title, null, "", MessageDialog.QUESTION, //$NON-NLS-2$
-            new String[] { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL }, 0) {
+        MessageDialog dlg = new MessageDialog(this.part.getSite().getShell(), Messages.ConvertPDE2VirgoProject_title, null, "",
+            MessageDialog.QUESTION, new String[] { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL }, 0) {
 
             @Override
             protected Control createMessageArea(Composite composite) {

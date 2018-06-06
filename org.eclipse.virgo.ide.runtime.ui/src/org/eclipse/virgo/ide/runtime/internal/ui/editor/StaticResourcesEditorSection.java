@@ -1,17 +1,12 @@
-// TODO - externalize strings ""
-// grid data della tabella non funziona
-// controlli sul file name nel dialog di aggiunta
-
-/*******************************************************************************
- * Copyright (c) 2009, 2012 SpringSource, a divison of VMware, Inc.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+/*********************************************************************
+ * Copyright (c) 2009, 2012 SpringSource, a division of VMware, Inc. and others.
  *
- * Contributors:
- *     SpringSource, a division of VMware, Inc. - initial API and implementation
- *******************************************************************************/
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+**********************************************************************/
 
 package org.eclipse.virgo.ide.runtime.internal.ui.editor;
 
@@ -161,22 +156,22 @@ public class StaticResourcesEditorSection extends ServerEditorSection {
                 InputDialog dialog = new InputDialog(getShell(), Messages.StaticResourcesEditorSection_new_filename_dialog_title,
                     Messages.StaticResourcesEditorSection_new_filename_dialog_message, "", new IInputValidator() { //$NON-NLS-1$
 
-                    public String isValid(String newText) {
-                        if (!StringUtils.isNotBlank(newText)) {
-                            return Messages.StaticResourcesEditorSection_empty_filename_error;
-                        }
+                        public String isValid(String newText) {
+                            if (!StringUtils.isNotBlank(newText)) {
+                                return Messages.StaticResourcesEditorSection_empty_filename_error;
+                            }
 
-                        if ("*".equals(newText)) { //$NON-NLS-1$
-                            return Messages.StaticResourcesEditorSection_wildcard_too_greedy;
-                        }
+                            if ("*".equals(newText)) { //$NON-NLS-1$
+                                return Messages.StaticResourcesEditorSection_wildcard_too_greedy;
+                            }
 
-                        String replaceWildcards = newText.replaceAll("\\?", "a").replaceAll("\\*", "b"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-                        if (!Path.isValidWindowsSegment(replaceWildcards) || !Path.isValidWindowsSegment(replaceWildcards)) {
-                            return Messages.StaticResourcesEditorSection_invalid_path;
+                            String replaceWildcards = newText.replaceAll("\\?", "a").replaceAll("\\*", "b"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                            if (!Path.isValidWindowsSegment(replaceWildcards) || !Path.isValidWindowsSegment(replaceWildcards)) {
+                                return Messages.StaticResourcesEditorSection_invalid_path;
+                            }
+                            return null;
                         }
-                        return null;
-                    }
-                });
+                    });
                 if (dialog.open() == Window.OK) {
                     StaticResourcesEditorSection.this.updating = true;
                     List<Object> filenames = new ArrayList<Object>(

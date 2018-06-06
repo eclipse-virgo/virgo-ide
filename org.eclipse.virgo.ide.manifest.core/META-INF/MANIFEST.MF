@@ -40,8 +40,6 @@ Export-Package:
  org.eclipse.virgo.ide.manifest.core.editor.model,
  org.eclipse.virgo.ide.manifest.internal.core,
  org.eclipse.virgo.ide.manifest.internal.core.model,
- org.eclipse.virgo.ide.manifest.internal.core.validation,
- org.eclipse.virgo.ide.manifest.internal.core.validation.rules,
  org.eclipse.virgo.ide.module.core,
  org.eclipse.virgo.kernel.osgi.provisioning.tools,
  org.eclipse.virgo.kernel.repository

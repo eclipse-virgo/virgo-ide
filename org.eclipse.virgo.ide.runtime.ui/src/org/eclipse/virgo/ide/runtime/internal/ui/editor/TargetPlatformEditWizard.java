@@ -1,3 +1,12 @@
+/*********************************************************************
+ * Copyright (c) 2015 GianMaria Romanato
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+**********************************************************************/
 
 package org.eclipse.virgo.ide.runtime.internal.ui.editor;
 
@@ -12,7 +21,6 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.eclipse.virgo.ide.runtime.internal.ui.PDETargetPlatformComposite;
-import org.eclipse.virgo.ide.runtime.internal.ui.PDEUIMessages;
 import org.eclipse.virgo.ide.ui.ServerIdeUiPlugin;
 import org.eclipse.wst.server.core.IRuntimeWorkingCopy;
 
@@ -58,7 +66,8 @@ public class TargetPlatformEditWizard extends Wizard {
                 }
             });
         } catch (Exception e) {
-            StatusManager.getManager().handle(new Status(IStatus.ERROR, ServerIdeUiPlugin.PLUGIN_ID, TargetPlatformSectionMessages.TargetPlatformSection_InternalError, e),
+            StatusManager.getManager().handle(
+                new Status(IStatus.ERROR, ServerIdeUiPlugin.PLUGIN_ID, TargetPlatformSectionMessages.TargetPlatformSection_InternalError, e),
                 StatusManager.LOG | StatusManager.SHOW);
         }
         return true;

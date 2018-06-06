@@ -5,7 +5,7 @@
       version="1.5.1.qualifier"
       provider-name="%providerName">
 
-   <license url="http://www.eclipse.org/legal/epl-v10.html">
+   <license url="http://www.eclipse.org/legal/epl-v20.html">
       Eclipse Public License - v 1.0
 THE ACCOMPANYING PROGRAM IS PROVIDED UNDER THE TERMS OF THIS
 ECLIPSE PUBLIC LICENSE (&quot;AGREEMENT&quot;). ANY USE, REPRODUCTION OR
@@ -203,6 +203,23 @@ Agreement more than one year after the cause of action arose.
 Each party waives its rights to a jury trial in any resulting
 litigation.
    </license>
+
+   <requires>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.ui.forms"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.core.filesystem"/>
+      <import plugin="org.eclipse.jdt.ui"/>
+      <import plugin="org.eclipse.jdt.core"/>
+      <import plugin="org.eclipse.jdt.launching"/>
+      <import plugin="org.eclipse.pde.ui"/>
+      <import plugin="org.eclipse.wst.web"/>
+      <import plugin="org.eclipse.wst.web.ui"/>
+      <import plugin="org.eclipse.wst.common.frameworks.ui"/>
+      <import plugin="org.eclipse.wst.common.modulecore"/>
+   </requires>
 
    <plugin
          id="org.eclipse.virgo.ide.eclipse"
