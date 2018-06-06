@@ -29,7 +29,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.ui.jarpackager.IJarExportRunnable;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.virgo.ide.export.BundleExportUtils;
 import org.eclipse.virgo.ide.tests.util.VirgoIdeTestCase;
@@ -52,11 +52,11 @@ public class BundleExportTestCase extends VirgoIdeTestCase {
 
         final IStatus[] statusArray = new IStatus[1];
 
+        final Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
         PlatformUI.getWorkbench().getActiveWorkbenchWindow().run(true, true, new IRunnableWithProgress() {
 
             public void run(IProgressMonitor arg0) throws InvocationTargetException, InterruptedException {
-                IJarExportRunnable op = BundleExportUtils.createExportOperation(javaProject, jarLocation, Display.getDefault().getActiveShell(),
-                    new ArrayList<IStatus>());
+                IJarExportRunnable op = BundleExportUtils.createExportOperation(javaProject, jarLocation, shell, new ArrayList<IStatus>());
                 op.run(arg0);
                 statusArray[0] = op.getStatus();
             }
