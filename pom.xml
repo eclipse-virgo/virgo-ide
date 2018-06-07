@@ -191,6 +191,9 @@
 									<goal>sign</goal>
 								</goals>
 								<phase>verify</phase>
+								<configuration>
+									<excludeInnerJars>true</excludeInnerJars>
+								</configuration>
 							</execution>
 						</executions>
 					</plugin>
@@ -359,7 +362,7 @@
 					<artifactId>tycho-packaging-plugin</artifactId>
 					<version>${tycho-version}</version>
 					<configuration>
-<!-- 						<format>yyyyMMddHHmm-'${p2.qualifier}'</format> -->
+						<!-- <format>yyyyMMddHHmm-'${p2.qualifier}'</format> -->
 						<archiveSite>false</archiveSite>
 					</configuration>
 				</plugin>
