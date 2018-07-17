@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><?pde version="3.8"?><target includeMode="feature" name="Virgo Target" sequenceNumber="77">
+<locations>
+<location path="${eclipse_home}" type="Profile"/>
+<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<unit id="javax.xml.stream" version="1.0.1.v201004272200"/>
+<unit id="javax.xml.bind" version="2.2.0.v201105210648"/>
+<unit id="org.hamcrest.core" version="1.3.0.v201303031735"/>
+<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20150519210750/repository/"/>
+</location>
+	<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+		<unit id="org.eclipse.equinox.http.jetty.feature.group" version="3.0.100.v20130327-1442"/>
+		<unit id="org.eclipse.equinox.regions.feature.group" version="1.1.101.v20130722-1314"/>
+		<unit id="org.eclipse.virgo.core.feature.group" version="3.7.2.RELEASE"/>
+		<unit id="org.eclipse.virgo.ds.feature.group" version="1.4.200.v20131126-2331"/>
+		<unit id="org.eclipse.virgo.kernel.feature.group" version="3.7.2.RELEASE"/>
+		<unit id="org.eclipse.virgo.kernel.springintegration.feature.group" version="3.7.2.RELEASE"/>
+		<unit id="org.eclipse.virgo.management.feature.group" version="3.7.2.RELEASE"/>
+		<unit id="org.eclipse.virgo.medic.feature.group" version="3.7.2.RELEASE"/>
+		<unit id="org.eclipse.virgo.nano.mbeans.feature.group" version="3.7.2.RELEASE"/>
+		<unit id="org.eclipse.virgo.shell.feature.group" version="3.7.2.RELEASE"/>
+		<unit id="org.eclipse.virgo.simpleconfigurator.feature.group" version="3.7.2.RELEASE"/>
+		<unit id="org.eclipse.virgo.springdm.feature.group" version="2.1.0.JAVA7"/>
+		<unit id="org.eclipse.virgo.tools.feature.group" version="3.7.2.RELEASE"/>
+		<repository location="http://download.eclipse.org/virgo/release/updatesite/3.7.2.RELEASE"/>
+	</location>
+	<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="slicer" includeSource="true" type="InstallableUnit">
+		<unit id="org.eclipse.libra.facet.feature.feature.group" version="0.3.3.201611112016"/>
+		<unit id="org.eclipse.libra.framework.editor.feature.feature.group" version="0.3.3.201611112016"/>
+		<unit id="org.eclipse.libra.framework.feature.feature.group" version="0.3.3.201611112016"/>
+		<unit id="org.eclipse.libra.warproducts.feature.feature.group" version="0.3.3.201611112016"/>
+		<repository location="http://download.eclipse.org/libra/nightly/"/>
+	</location>
+</locations>
+</target>

@@ -13,19 +13,11 @@
 	</prerequisites>
 
 	<properties>
-		<archive-dir>${basedir}/target/archive</archive-dir>
-		<site-dir></site-dir>
-
 		<skip-source-check>true</skip-source-check>
 		<skip-sign>true</skip-sign>
-		<skip-promote>true</skip-promote>
-
 		<pack200>"${java.home}/bin"</pack200>
-		<test.osvmargs></test.osvmargs>
-
 		<tycho-version>1.2.0</tycho-version>
 		<signer-version>1.1.5</signer-version>
-		<skip-source-check>true</skip-source-check>
 	</properties>
 
 	<modules>
@@ -69,9 +61,6 @@
 			</activation>
 			<properties>
 				<pack200>/shared/common/jdk-1.5.0-22.x86_64/bin</pack200>
-				<archive-dir>/home/data/httpd/download.eclipse.org/virgo/snapshot/IDE/drops</archive-dir>
-				<site-dir>/home/data/httpd/download.eclipse.org/virgo/snapshot/IDE</site-dir>
-				<skip-promote>false</skip-promote>
 			</properties>
 			<build>
 				<plugins>
@@ -237,7 +226,7 @@
 		<repository>
 			<id>eclipse</id>
 			<layout>p2</layout>
-			<url>http://download.eclipse.org/releases/oxygen/</url>
+			<url>http://download.eclipse.org/releases/photon/</url>
 		</repository>
 		<repository>
 			<id>orbit</id>
@@ -257,7 +246,7 @@
 		<repository>
 			<id>libra-milestone</id>
 			<layout>p2</layout>
-			<url>http://download.eclipse.org/libra/milestones/</url>
+			<url>http://download.eclipse.org/libra/releases/</url>
 		</repository>
 		<repository>
 			<id>bundlor-milestone</id>
