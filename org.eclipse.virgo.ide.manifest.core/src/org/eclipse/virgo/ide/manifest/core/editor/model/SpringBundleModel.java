@@ -10,6 +10,9 @@
 
 package org.eclipse.virgo.ide.manifest.core.editor.model;
 
+import java.lang.reflect.Method;
+import java.nio.charset.Charset;
+
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.pde.internal.core.ibundle.IBundleModelFactory;
@@ -36,6 +39,28 @@ public class SpringBundleModel extends BundleModel {
             this.fFactory = new SpringBundleModelFactory(this);
         }
         return this.fFactory;
+    }
+
+    public void setCharset(String charset) {
+        Method m;
+        try {
+            m = getClass().getSuperclass().getMethod("setCharset", Charset.class);
+            try {
+                m.invoke(this, Charset.forName(charset));
+                return;
+            } catch (Exception e) {
+            }
+        } catch (NoSuchMethodException e) {
+            try {
+                m = getClass().getSuperclass().getMethod("setCharset", String.class);
+                m.invoke(this, charset);
+                return;
+            } catch (Exception e1) {
+            }
+        } catch (Exception e) {
+        }
+
+        throw new RuntimeException("Cannot set file charset");
     }
 
 }
