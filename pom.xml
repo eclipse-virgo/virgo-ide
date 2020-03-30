@@ -428,8 +428,7 @@
 						<useUIHarness>true</useUIHarness>
 						<useUIThread>true</useUIThread>
 						<forkedProcessTimeoutInSeconds>1800</forkedProcessTimeoutInSeconds>
-						<argLine>-Xmx1024m
-							-Djava.io.tmpdir=${project.build.directory} ${test.osvmargs}</argLine>
+						<argLine>-Xmx1024m -Djava.io.tmpdir=${project.build.directory} ${test.osvmargs}</argLine>
 					</configuration>
 				</plugin>
 			</plugins>
