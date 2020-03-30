@@ -11,11 +11,11 @@
 package org.eclipse.virgo.ide.runtime.internal.ui.projects;
 
 import org.eclipse.core.runtime.Path;
-import org.eclipse.jdt.internal.core.JarPackageFragmentRoot;
+import org.eclipse.jdt.internal.core.ExternalPackageFragmentRoot;
 import org.eclipse.jdt.internal.core.JavaProject;
 import org.eclipse.virgo.ide.runtime.core.artefacts.ILocalArtefact;
 
-public class ProjectBundleRoot extends JarPackageFragmentRoot implements IServerProjectArtefact {
+public class ProjectBundleRoot extends ExternalPackageFragmentRoot implements IServerProjectArtefact {
 
     private final ILocalArtefact artefact;
 
