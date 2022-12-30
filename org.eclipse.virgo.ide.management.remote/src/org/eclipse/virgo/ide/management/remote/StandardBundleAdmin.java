@@ -10,10 +10,10 @@
 
 package org.eclipse.virgo.ide.management.remote;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.io.StringBufferInputStream;
 import java.util.Arrays;
 import java.util.Dictionary;
 import java.util.Enumeration;
@@ -22,6 +22,7 @@ import java.util.Map;
 
 import org.apache.felix.service.command.CommandProcessor;
 import org.apache.felix.service.command.CommandSession;
+import org.eclipse.gemini.blueprint.util.OsgiServiceReferenceUtils;
 import org.eclipse.osgi.service.resolver.BundleDescription;
 import org.eclipse.osgi.service.resolver.ExportPackageDescription;
 import org.eclipse.osgi.service.resolver.PlatformAdmin;
@@ -29,6 +30,8 @@ import org.eclipse.virgo.ide.management.remote.ServiceReference.Type;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.util.tracker.ServiceTracker;
+import org.springframework.jmx.export.annotation.ManagedOperation;
+import org.springframework.jmx.export.annotation.ManagedResource;
 
 /**
  * @author Christian Dupuis
@@ -71,8 +74,7 @@ public class StandardBundleAdmin implements BundleAdmin {
 
     @ManagedOperation(description = "Executes the given command")
     public String execute(String cmdLine) {
-        @SuppressWarnings("deprecation")
-        StringBufferInputStream in = new StringBufferInputStream("");
+        ByteArrayInputStream in = new ByteArrayInputStream("".getBytes());
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         PrintStream out = new PrintStream(output);
 

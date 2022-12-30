@@ -54,7 +54,6 @@ import org.eclipse.virgo.ide.runtime.core.provisioning.IBundleRepositoryChangeLi
 import org.eclipse.virgo.ide.runtime.internal.core.provisioning.IArtefactRepositoryLoader;
 import org.eclipse.virgo.ide.runtime.internal.core.provisioning.JsonArtefactRepositoryLoader;
 import org.eclipse.virgo.ide.runtime.internal.core.utils.StatusUtil;
-import org.eclipse.virgo.ide.runtime.internal.core.utils.WebDownloadUtils;
 import org.eclipse.virgo.kernel.repository.BundleDefinition;
 import org.eclipse.virgo.kernel.repository.BundleRepository;
 import org.eclipse.virgo.kernel.repository.LibraryDefinition;
@@ -250,12 +249,6 @@ public class ArtefactRepositoryManager {
 
     public void stop() {
         this.artefactRepository = null;
-    }
-
-    public void update() {
-        ArtefactRepositoryUpdateJob updateJob = new ArtefactRepositoryUpdateJob();
-        updateJob.setPriority(Job.INTERACTIVE);
-        updateJob.schedule();
     }
 
     private boolean alreadyInBundleList(List<BundleArtefact> required, BundleArtefact exporter) {
@@ -571,64 +564,6 @@ public class ArtefactRepositoryManager {
             }
         }
 
-    }
-
-    public class ArtefactRepositoryUpdateJob extends ArtefactRepositoryStartJob {
-
-        /**
-         * The url under which the newest version of the repository index will be published
-         */
-        private static final String REPOSITORY_INDEX_URL = "http://static.springsource.com/projects/sts-dm-server/index/repository.zip";
-
-        @Override
-        protected IStatus run(IProgressMonitor monitor) {
-
-            try {
-                // first download file from the online repository
-                Date lastModifiedDate = WebDownloadUtils.getLastModifiedDate(REPOSITORY_INDEX_URL, monitor);
-                if (lastModifiedDate != null && Long.valueOf(lastModifiedDate.getTime()).compareTo(getLocalRepositoryTimestamp()) == 1) {
-                    File repositoryArchive = WebDownloadUtils.downloadFile(REPOSITORY_INDEX_URL, getLocalDirectory().getParentFile(), monitor);
-
-                    if (repositoryArchive != null) {
-
-                        // secondly extract it to the local repository location
-                        if (repositoryArchive.exists() && repositoryArchive.canRead()) {
-                            FileInputStream is = null;
-                            try {
-                                is = new FileInputStream(repositoryArchive);
-                                writeArchiveContentsToLocalRespositoryDirectory(is);
-                            } finally {
-                                if (is != null) {
-                                    try {
-                                        is.close();
-                                    } catch (Exception e) {
-                                        // ignore
-                                    }
-                                }
-                            }
-                        }
-
-                        // thirdly load the repository in memory
-                        ArtefactRepository newArtefactRepository = createArtefactRespositoryLoader().loadArtefactRepository(getLocalDirectory());
-                        try {
-                            w.lock();
-                            ArtefactRepositoryManager.this.artefactRepository = newArtefactRepository;
-                            ArtefactRepositoryManager.this.repositoryDate = new Date(getLocalRepositoryTimestamp());
-                        } finally {
-                            w.unlock();
-                        }
-                    }
-                }
-            } catch (FileNotFoundException e) {
-                StatusUtil.error(e);
-            } catch (IOException e) {
-                StatusUtil.error(e);
-            } catch (CoreException e) {
-                StatusUtil.error(e);
-            }
-
-            return Status.OK_STATUS;
-        }
     }
 
     // TODO why is this here?

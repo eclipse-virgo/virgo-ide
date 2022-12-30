@@ -11,8 +11,6 @@
 package org.eclipse.virgo.ide.ui.editors;
 
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.viewers.IContentProvider;
@@ -37,10 +35,10 @@ import org.eclipse.virgo.ide.manifest.core.IHeaderConstants;
 import org.eclipse.virgo.ide.manifest.core.editor.model.ImportBundleHeader;
 import org.eclipse.virgo.ide.manifest.core.editor.model.ImportBundleObject;
 import org.eclipse.virgo.ide.runtime.core.artefacts.Artefact;
-import org.eclipse.virgo.ide.runtime.core.artefacts.ArtefactRepository;
 import org.eclipse.virgo.ide.runtime.core.artefacts.BundleArtefact;
 import org.eclipse.virgo.ide.runtime.core.artefacts.IArtefact;
 import org.eclipse.virgo.ide.runtime.core.provisioning.RepositoryUtils;
+import org.eclipse.virgo.ide.ui.ServerIdeUiPlugin;
 
 /**
  * @author Christian Dupuis
@@ -52,15 +50,13 @@ public class BundleImportSection extends AbstractImportSection {
 
     private static final int ADD_INDEX = 0;
 
-    private static final int ADD_REMOTE_BUNDLE_INDEX = 1;
+    private static final int REMOVE_INDEX = 1;
 
-    private static final int REMOVE_INDEX = 2;
-
-    private static final int PROPERTIES_INDEX = 3;
+    private static final int PROPERTIES_INDEX = 2;
 
     public BundleImportSection(PDEFormPage page, Composite parent) {
-        super(page, parent, Section.DESCRIPTION, new String[] { PDEUIMessages.ImportPackageSection_add, "Download...",
-            PDEUIMessages.ImportPackageSection_remove, PDEUIMessages.ImportPackageSection_properties });
+        super(page, parent, Section.DESCRIPTION, new String[] { PDEUIMessages.ImportPackageSection_add, PDEUIMessages.ImportPackageSection_remove,
+            PDEUIMessages.ImportPackageSection_properties });
 
         getSection().setText("Import Bundle");
         getSection().setDescription(DESCRIPTION);
@@ -95,33 +91,23 @@ public class BundleImportSection extends AbstractImportSection {
         return new BundleImportLabelProvider();
     }
 
-    private void setElements(ImportListSelectionDialog dialog, boolean addRemote) {
+    private void setElements(ImportListSelectionDialog dialog) {
         IProject project = ((BundleManifestEditor) this.getPage().getEditor()).getCommonProject();
         IArtefact[] bundles = null;
-        if (addRemote) {
-            ArtefactRepository bundleRepository = RepositoryUtils.searchForArtifacts("", true, false);
-            bundles = bundleRepository.getBundleSet().toArray();
-        } else {
-            Collection<Artefact> bundleList = RepositoryUtils.getImportBundleProposals(project, "");
-            bundles = bundleList.toArray(new IArtefact[] {});
-        }
+        Collection<Artefact> bundleList = RepositoryUtils.getImportBundleProposals(project, "");
+        bundles = bundleList.toArray(new IArtefact[] {});
         dialog.setElements(bundles);
     }
 
     @Override
     protected void handleAdd() {
-        internalHandleAdd(false);
-    }
-
-    private void internalHandleAdd(final boolean addRemote) {
-
         final ImportListSelectionDialog dialog = new ImportListSelectionDialog(PDEPlugin.getActiveWorkbenchShell(),
             new BundleImportDialogLabelProvider());
 
         Runnable runnable = new Runnable() {
 
             public void run() {
-                setElements(dialog, addRemote);
+                setElements(dialog);
                 dialog.setMultipleSelection(true);
                 dialog.setTitle("Bundle Selection");
                 dialog.setMessage("Select a Bundle:");
@@ -135,11 +121,7 @@ public class BundleImportSection extends AbstractImportSection {
 
             Object[] selected = dialog.getResult();
 
-            if (addRemote) {
-                addRemoteBundles(selected);
-            } else {
-                addLocalBundles(selected);
-            }
+            addLocalBundles(selected);
         }
 
     }
@@ -158,39 +140,6 @@ public class BundleImportSection extends AbstractImportSection {
             if (osgiVers.getMajor() != 0 || osgiVers.getMinor() != 0 || osgiVers.getService() != 0
                 || osgiVers.getQualifier() != null && !osgiVers.getQualifier().trim().equals("")) {
                 versionString = "[" + currBundle.getVersion().toString() + "," + currBundle.getVersion().toString() + "]";
-            }
-            importBundleHeader.addBundle(currBundle.getSymbolicName(), versionString);
-        }
-    }
-
-    private void addRemoteBundles(Object[] selected) {
-        ImportBundleHeader importBundleHeader = (ImportBundleHeader) getBundle().getManifestHeader(IHeaderConstants.IMPORT_BUNDLE);
-
-        Set<Artefact> remoteArtifactDefinitions = new HashSet<Artefact>(selected.length);
-
-        for (Object currSelectedElement : selected) {
-            remoteArtifactDefinitions.add((Artefact) currSelectedElement);
-        }
-
-        IProject project = ((BundleManifestEditor) this.getPage().getEditor()).getCommonProject();
-        RepositoryUtils.downloadArifacts(remoteArtifactDefinitions, project, Display.getDefault().getActiveShell(), false);
-
-        for (Object currSelectedElement : selected) {
-            BundleArtefact currBundle = (BundleArtefact) currSelectedElement;
-            if (null == importBundleHeader) {
-                getBundle().setHeader(IHeaderConstants.IMPORT_BUNDLE, "");
-                importBundleHeader = (ImportBundleHeader) getBundle().getManifestHeader(IHeaderConstants.IMPORT_BUNDLE);
-            }
-
-            String versionString = null;
-            OsgiVersion osgiVers = currBundle.getVersion();
-            if (osgiVers.getMajor() != 0 || osgiVers.getMinor() != 0 || osgiVers.getService() != 0
-                || osgiVers.getQualifier() != null && !osgiVers.getQualifier().trim().equals("")) {
-                versionString = "[" + currBundle.getVersion().toString() + "," + currBundle.getVersion().toString() + "]";
-            }
-
-            if (importBundleHeader.hasElement(currBundle.getSymbolicName())) {
-                importBundleHeader.removeBundle(currBundle.getSymbolicName());
             }
             importBundleHeader.addBundle(currBundle.getSymbolicName(), versionString);
         }
@@ -224,7 +173,7 @@ public class BundleImportSection extends AbstractImportSection {
 
         @Override
         public Image getImage(Object element) {
-            return PDEPluginImages.DESC_BUNDLE_OBJ.createImage();
+            return ServerIdeUiPlugin.getPDEImage(PDEPluginImages.DESC_BUNDLE_OBJ);
         }
 
         @Override
@@ -242,7 +191,7 @@ public class BundleImportSection extends AbstractImportSection {
 
         @Override
         public Image getColumnImage(Object element, int columnIndex) {
-            return PDEPluginImages.DESC_BUNDLE_OBJ.createImage();
+            return ServerIdeUiPlugin.getPDEImage(PDEPluginImages.DESC_BUNDLE_OBJ);
         }
 
         @Override
@@ -313,12 +262,4 @@ public class BundleImportSection extends AbstractImportSection {
         }
     }
 
-    @Override
-    protected void buttonSelected(int index) {
-        if (index == ADD_REMOTE_BUNDLE_INDEX) {
-            internalHandleAdd(true);
-        } else {
-            super.buttonSelected(index);
-        }
-    }
 }

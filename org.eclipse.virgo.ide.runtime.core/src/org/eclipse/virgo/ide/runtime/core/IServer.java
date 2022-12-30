@@ -52,8 +52,6 @@ public interface IServer {
 
     String PROPERTY_ARTEFACT_ORDER = ServerCorePlugin.PLUGIN_ID + "artefact.deploy.order";
 
-    String PROPERTY_MAX_PERM_SIZE = ServerCorePlugin.PLUGIN_ID + "max.perm.size";
-
     /**
      * Returns the deploy directory.
      */
@@ -94,7 +92,5 @@ public interface IServer {
     List<String> getArtefactOrder();
 
     String getStaticFilenamePatterns();
-
-    String getMaxPermSize();
 
 }

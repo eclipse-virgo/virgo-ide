@@ -34,6 +34,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.ui.IMarkerResolution;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.texteditor.MarkerAnnotation;
+import org.eclipse.virgo.ide.ui.ServerIdeUiPlugin;
 
 /**
  * @author Christian Dupuis
@@ -167,15 +168,12 @@ public class BundleQuickAssistAssistant extends QuickAssistAssistant {
 
     public BundleQuickAssistAssistant() {
         setQuickAssistProcessor(new BundleQuickAssistProcessor());
-        this.createImage = PDEPluginImages.DESC_ADD_ATT.createImage();
-        this.removeImage = PDEPluginImages.DESC_DELETE.createImage();
-        this.renameImage = PDEPluginImages.DESC_REFRESH.createImage();
+        this.createImage = ServerIdeUiPlugin.getPDEImage(PDEPluginImages.DESC_ADD_ATT);
+        this.removeImage = ServerIdeUiPlugin.getPDEImage(PDEPluginImages.DESC_DELETE);
+        this.renameImage = ServerIdeUiPlugin.getPDEImage(PDEPluginImages.DESC_REFRESH);
     }
 
     public void dispose() {
-        this.createImage.dispose();
-        this.removeImage.dispose();
-        this.renameImage.dispose();
     }
 
 }

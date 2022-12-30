@@ -10,7 +10,6 @@
 
 package org.eclipse.virgo.ide.runtime.core.provisioning;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -21,15 +20,11 @@ import java.util.TreeSet;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.text.StringMatcher;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jface.dialogs.ProgressMonitorDialog;
-import org.eclipse.jface.operation.IRunnableContext;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.osgi.service.resolver.VersionRange;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.internal.misc.StringMatcher;
 import org.eclipse.virgo.ide.bundlerepository.domain.OsgiVersion;
+import org.eclipse.virgo.ide.bundlerepository.domain.PackageExport;
 import org.eclipse.virgo.ide.bundlerepository.domain.PackageMember;
 import org.eclipse.virgo.ide.facet.core.FacetUtils;
 import org.eclipse.virgo.ide.manifest.core.BundleManifestCorePlugin;
@@ -52,6 +47,7 @@ import org.eclipse.virgo.ide.runtime.internal.core.runtimes.VirgoRuntimeProvider
 import org.eclipse.virgo.kernel.repository.BundleRepository;
 import org.eclipse.virgo.repository.Repository;
 import org.eclipse.virgo.util.osgi.manifest.BundleManifest;
+import org.eclipse.virgo.util.osgi.manifest.ExportPackage;
 import org.eclipse.virgo.util.osgi.manifest.ExportedPackage;
 import org.eclipse.wst.server.core.IRuntime;
 import org.osgi.framework.Version;
@@ -64,26 +60,7 @@ import org.osgi.framework.Version;
  * @author Leo Dos Santos
  * @since 1.0.0
  */
-@SuppressWarnings("restriction")
 public class RepositoryUtils {
-
-    public static final String DOWNLOAD_TYPE_BINARY = "binary";
-
-    public static final String DOWNLOAD_TYPE_BINARY_HASH = "binary-hash";
-
-    public static final String DOWNLOAD_TYPE_LIBRARY = "library";
-
-    public static final String DOWNLOAD_TYPE_LIBRARY_HASH = "library-hash";
-
-    public static final String DOWNLOAD_TYPE_LICENSE = "license";
-
-    public static final String DOWNLOAD_TYPE_SOURCE = "source";
-
-    public static final String DOWNLOAD_TYPE_SOURCE_HASH = "source-hash";
-
-    private static final String BRITS_BASE = "http://www.springsource.com/repository/app";
-
-    private static final String DOWNLOAD_BASE = "http://repository.springsource.com/ivy";
 
     public static boolean doesRuntimeSupportRepositories(IRuntime runtime) {
         IServerRuntimeProvider provider = RuntimeProviders.getRuntimeProvider(runtime);
@@ -97,44 +74,6 @@ public class RepositoryUtils {
             }
         }
         return false;
-    }
-
-    /**
-     * Downloads the given <code>artifacts</code>.
-     */
-    public static void downloadArifacts(final Set<Artefact> artifacts, final IProject project, final Shell shell, boolean resolveDependencies) {
-
-        if (resolveDependencies) {
-            artifacts.addAll(resolveDependencies(artifacts, false));
-        }
-
-        final Set<IRuntime> runtimes = new HashSet<IRuntime>();
-
-        ServerRuntimeUtils.execute(project, new ServerRuntimeUtils.ServerRuntimeCallback() {
-
-            public boolean doWithRuntime(VirgoServerRuntime runtime) {
-                runtimes.add(runtime.getRuntime());
-                return true;
-            }
-        });
-
-        if (runtimes.size() > 0) {
-
-            IRunnableWithProgress runnable = new IRunnableWithProgress() {
-
-                public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-                    RepositoryProvisioningJob job = new RepositoryProvisioningJob(runtimes, artifacts, true);
-                    job.run(monitor);
-                }
-            };
-
-            try {
-                IRunnableContext context = new ProgressMonitorDialog(shell);
-                context.run(true, true, runnable);
-            } catch (InvocationTargetException e1) {
-            } catch (InterruptedException e2) {
-            }
-        }
     }
 
     /**
@@ -291,55 +230,9 @@ public class RepositoryUtils {
         return artifacts;
     }
 
-    public static String getRepositoryUrl(IArtefact artefact) {
-        StringBuilder url = new StringBuilder(BRITS_BASE);
-        if (artefact instanceof BundleArtefact) {
-            url.append("/bundle/version/detail?name=");
-        } else if (artefact instanceof LibraryArtefact) {
-            url.append("/library/version/detail?name=");
-        }
-        url.append(artefact.getSymbolicName());
-        url.append("&version=");
-        url.append(artefact.getVersion().toString());
-        return url.toString();
-    }
-
-    public static String getResourceUrl(BundleArtefact bundle, String downloadType) {
-        StringBuffer url = new StringBuffer(DOWNLOAD_BASE);
-        url.append("/bundles");
-        url.append(getCategory(bundle));
-        if (DOWNLOAD_TYPE_SOURCE.equals(downloadType)) {
-            url.append(bundle.getRelativeSourceUrlPath());
-        } else if (DOWNLOAD_TYPE_SOURCE_HASH.equals(downloadType)) {
-            url.append(bundle.getRelativeSourceUrlPath()).append(".sha1");
-        } else if (DOWNLOAD_TYPE_LICENSE.equals(downloadType)) {
-            url.append(bundle.getRelativeLicenseUrlPath());
-        } else if (DOWNLOAD_TYPE_BINARY_HASH.equals(downloadType)) {
-            url.append(bundle.getRelativeUrlPath()).append(".sha1");
-        } else {
-            url.append(bundle.getRelativeUrlPath());
-        }
-        return url.toString();
-    }
-
-    public static String getResourceUrl(LibraryArtefact library, String downloadType) {
-        StringBuffer url = new StringBuffer(DOWNLOAD_BASE);
-        url.append("/libraries");
-        url.append(getCategory(library));
-        if (DOWNLOAD_TYPE_LICENSE.equals(downloadType)) {
-            url.append(library.getRelativeLicenseUrlPath());
-        } else if (DOWNLOAD_TYPE_LIBRARY_HASH.equals(downloadType)) {
-            url.append(library.getRelativeUrlPath()).append(".sha1");
-        } else {
-            url.append(library.getRelativeUrlPath());
-        }
-        return url.toString();
-    }
-
     /**
      * Returns proposals for version content assist requests. 2.5.4 -> 2.5.4 [2.5.4,2.6.0) [2.5.4,2.5.4] [2.5.4,3.0.0)
      */
-    @SuppressWarnings("unchecked")
     public static List<String> getVersionProposals(Set<String> versionStrings) {
         // First order the version so that the highest appears first
         List<Version> versions = new ArrayList<Version>();
@@ -371,22 +264,6 @@ public class RepositoryUtils {
     }
 
     /**
-     * Resolves dependencies of given <code>artefacts</code>. Currently this implementation only resolves direct bundle
-     * dependencies of {@link LibraryArtefact}s.
-     */
-    public static Set<Artefact> resolveDependencies(Set<Artefact> artifacts, boolean includeOptional) {
-        Set<Artefact> resolvedArtefacts = new HashSet<Artefact>(artifacts);
-        // resolve library dependencies
-        for (IArtefactTyped artefact : artifacts) {
-            if (artefact instanceof LibraryArtefact) {
-                resolvedArtefacts.addAll(
-                    ServerCorePlugin.getArtefactRepositoryManager().findLibraryDependencies((LibraryArtefact) artefact, includeOptional));
-            }
-        }
-        return resolvedArtefacts;
-    }
-
-    /**
      * Searches the remote bundle repository for matches of a given search string.
      */
     public static ArtefactRepository searchForArtifacts(final String search) {
@@ -397,7 +274,7 @@ public class RepositoryUtils {
      * Searches the remote bundle repository for matches of a given search string.
      */
     public static ArtefactRepository searchForArtifacts(final String search, boolean includeBundles, boolean includesLibraries) {
-        StringMatcher matcher = new StringMatcher("*" + search + "*", true, false);
+        StringMatcher matcher = new StringMatcher("*" + search + "*", true, false); //$NON-NLS-1$//$NON-NLS-2$
 
         ArtefactRepository repository = new ArtefactRepository();
         if (includeBundles) {
@@ -442,7 +319,14 @@ public class RepositoryUtils {
             if (manifest.getBundleVersion() != null) {
                 version = new OsgiVersion(manifest.getBundleVersion());
             }
-            bundles.add(new LocalBundleArtefact(manifest.getBundleName(), manifest.getBundleSymbolicName().getSymbolicName(), version, false, null));
+            LocalBundleArtefact bundleArtefact = new LocalBundleArtefact(manifest.getBundleName(), manifest.getBundleSymbolicName().getSymbolicName(),
+                version, false, null);
+            ExportPackage exports = manifest.getExportPackage();
+            for (ExportedPackage export : exports.getExportedPackages()) {
+                bundleArtefact.getExports().add(new PackageExport(bundleArtefact, export.getPackageName(), new OsgiVersion(export.getVersion())));
+            }
+
+            bundles.add(bundleArtefact);
         }
     }
 

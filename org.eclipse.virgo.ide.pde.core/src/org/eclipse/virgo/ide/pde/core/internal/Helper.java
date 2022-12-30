@@ -292,7 +292,7 @@ public class Helper {
         return true;
     }
 
-    public static void forcePDEEditor(IProject project) {
+    public static IFile forcePDEEditor(IProject project) {
         IFolder metaInf = project.getFolder(META_INF);
         if (metaInf.exists()) {
             IFile manifest = metaInf.getFile(MANIFEST_MF);
@@ -300,6 +300,7 @@ public class Helper {
                 // quick hack to force Eclipse to use the PDE editor
                 try {
                     manifest.setPersistentProperty(EDITOR_PROPERTY, EDITOR_VALUE);
+                    return manifest;
                 } catch (CoreException e) {
                     if (DEBUG) {
                         log.log(e.getStatus());
@@ -307,5 +308,6 @@ public class Helper {
                 }
             }
         }
+        return null;
     }
 }

@@ -1,0 +1,49 @@
+name: Build project
+on: [ pull_request, push ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: |
+              8
+              11
+              17
+          distribution: 'temurin'
+          cache: 'maven'
+      # - name: Build with Maven
+      #   run: xvfb-run mvn clean verify -Dtycho.localArtifacts=ignore
+      - name: Build with Maven
+        env:
+          JAVA_HOME: ${{ env.JAVA_HOME_17_X64 }}
+        run: | 
+          cp .github/toolchains.xml ~/.m2/toolchains.xml
+          xvfb-run mvn clean verify
+      # - name: Run Tests
+      #   uses: GabrielBB/xvfb-action@v1
+      #   with:
+      #     run: mvn -V -B verify
+      # - name: Run GUI Tests
+      #   env:
+      #     JAVA_HOME: ${{ env.JAVA_HOME_17_X64 }}
+      #   uses: coactions/setup-xvfb@v1
+      #   with:
+      #     run: mvn --batch-mode verify        
+      # - name: Publish Unit Test Results
+      #   uses: EnricoMi/publish-unit-test-result-action@v2
+      #   if: always()
+      #   with:
+      #     junit_files: ${{ github.workspace }}/**/target/surefire-reports/*.xml
+      - name: Get filename and version
+        run: |
+          echo file=$(ls org.eclipse.virgo.ide.site/target/org.eclipse.virgo.ide.site* | cut -d "/" -f 3) >> $GITHUB_ENV
+          echo version=$(ls org.eclipse.virgo.ide.site/target/repository/features/org.eclipse.virgo.ide.feature_* | cut -d "_" -f 2 | sed "s/.jar//") >> $GITHUB_ENV
+      - run: mkdir staging && cp org.eclipse.virgo.ide.site/target/*.zip staging
+      - uses: actions/upload-artifact@v3
+        with:
+          name: VirgoTools-${{env.version}}
+          path: staging/${{env.file}}

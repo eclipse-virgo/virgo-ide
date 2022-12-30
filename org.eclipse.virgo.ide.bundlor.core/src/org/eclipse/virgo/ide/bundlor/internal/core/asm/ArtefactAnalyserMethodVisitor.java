@@ -14,8 +14,8 @@ import org.eclipse.virgo.bundlor.support.partialmanifest.PartialManifest;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
-import org.objectweb.asm.commons.EmptyVisitor;
 
 /**
  * ASM {@link MethodVisitor} to scan method bodies for imports.
@@ -23,7 +23,7 @@ import org.objectweb.asm.commons.EmptyVisitor;
  * @author Christian Dupuis
  * @author Rob Harrop
  */
-final class ArtefactAnalyserMethodVisitor extends EmptyVisitor implements MethodVisitor {
+final class ArtefactAnalyserMethodVisitor extends MethodVisitor {
 
     /**
      * The <code>PartialManifest</code> being updated.
@@ -41,6 +41,7 @@ final class ArtefactAnalyserMethodVisitor extends EmptyVisitor implements Method
      * @param partialManifest the <code>PartialManifest</code>.
      */
     public ArtefactAnalyserMethodVisitor(PartialManifest partialManifest, Type type) {
+        super(Opcodes.ASM9);
         this.partialManifest = partialManifest;
         this.type = type;
     }

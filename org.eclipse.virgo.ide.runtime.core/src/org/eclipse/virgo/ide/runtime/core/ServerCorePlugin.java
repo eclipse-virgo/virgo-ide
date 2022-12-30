@@ -90,6 +90,7 @@ public class ServerCorePlugin extends AbstractUIPlugin {
         return getDefault().artefactRepositoryManager;
     }
 
+    // TODO REMOVE
     public URI getBundleUri(String bundleName) {
         URL url;
         try {

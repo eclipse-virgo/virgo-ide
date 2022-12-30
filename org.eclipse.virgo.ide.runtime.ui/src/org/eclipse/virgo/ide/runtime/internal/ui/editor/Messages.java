@@ -129,8 +129,6 @@ public class Messages extends NLS {
 
     public static String StartupEditorSection_description;
 
-    public static String StartupEditorSection_maxpermsize_label;
-
     public static String StartupEditorSection_start_with_clean_button;
 
     public static String StartupEditorSection_tail_into_console_button;

@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %Bundle-Name
+Bundle-SymbolicName: org.eclipse.virgo.ide.framework.editor.core
+Bundle-Version: 1.6.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-17
+Export-Package: org.eclipse.virgo.ide.framework.editor.core,
+ org.eclipse.virgo.ide.framework.editor.core.model
+Require-Bundle: org.eclipse.core.runtime;bundle-version="[3.2.0,4.0.0)"
+Bundle-Vendor: %Bundle-Vendor
+Bundle-Localization: plugin

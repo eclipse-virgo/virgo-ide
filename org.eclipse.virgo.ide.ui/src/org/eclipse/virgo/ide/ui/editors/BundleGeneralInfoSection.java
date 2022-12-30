@@ -162,12 +162,16 @@ public class BundleGeneralInfoSection extends AbstractPdeGeneralInfoSection {
     public void refresh() {
         IPluginModelBase model = (IPluginModelBase) getPage().getModel();
         if (model != null) {
-            IPlugin plugin = (IPlugin) model.getPluginBase();
             // Only update this field if it already has not been modified
             // This will prevent the cursor from being set to position 0 after
             // accepting a field assist proposal using \r
             if (this.fClassEntry.isDirty() == false) {
-                this.fClassEntry.setValue(plugin.getClassName(), true);
+                if (model.getPluginBase() instanceof IPlugin) {
+                    this.fClassEntry.setValue(((IPlugin) model.getPluginBase()).getClassName(), true);
+                } else {
+                    // fragment
+                    this.fClassEntry.setValue("", true);
+                }
             }
         }
         super.refresh();

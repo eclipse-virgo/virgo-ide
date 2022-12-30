@@ -13,8 +13,8 @@ package org.eclipse.virgo.ide.bundlor.internal.core.asm;
 import org.eclipse.virgo.bundlor.support.partialmanifest.PartialManifest;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.FieldVisitor;
+import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
-import org.objectweb.asm.commons.EmptyVisitor;
 
 /**
  * ASM {@link FieldVisitor} for scanning class files.
@@ -22,7 +22,7 @@ import org.objectweb.asm.commons.EmptyVisitor;
  * @author Christian Dupuis
  * @author Glyn Normington
  */
-final class ArtefactAnalyserFieldVisitor extends EmptyVisitor implements FieldVisitor {
+final class ArtefactAnalyserFieldVisitor extends FieldVisitor {
 
     /**
      * That <code>PartialManifest</code> being updated.
@@ -40,6 +40,7 @@ final class ArtefactAnalyserFieldVisitor extends EmptyVisitor implements FieldVi
      * @param partialManifest the <code>PartialManifest</code> to scan.
      */
     ArtefactAnalyserFieldVisitor(PartialManifest partialManifest, Type type) {
+        super(Opcodes.ASM9);
         this.partialManifest = partialManifest;
         this.type = type;
     }

@@ -13,7 +13,7 @@
 <feature
       id="org.eclipse.virgo.ide.feature"
       label="%featureName"
-      version="1.5.3.qualifier"
+      version="1.6.0.qualifier"
       provider-name="%providerName"
       plugin="org.eclipse.virgo.ide">
 
@@ -65,7 +65,6 @@
       <import plugin="org.eclipse.swt"/>
       <import plugin="org.eclipse.core.net"/>
       <import plugin="org.apache.commons.codec"/>
-      <import plugin="org.apache.commons.httpclient"/>
       <import plugin="org.eclipse.ui.console"/>
       <import plugin="org.eclipse.wst.xml.core"/>
       <import plugin="org.eclipse.wst.sse.core"/>
@@ -92,7 +91,7 @@
       <import plugin="org.eclipse.jface"/>
       <import plugin="org.eclipse.ui.workbench"/>
       <import plugin="org.eclipse.jst.j2ee"/>
-      <import plugin="org.slf4j.api"/>
+      <import plugin="slf4j.api"/>
       <import plugin="org.eclipse.help"/>
       <import plugin="org.eclipse.help.ui"/>
    </requires>
@@ -272,20 +271,6 @@
          unpack="false"/>
 
    <plugin
-         id="org.jdom"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="com.sun.syndication"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.virgo.ide.doc"
          download-size="0"
          install-size="0"
@@ -295,7 +280,7 @@
          id="org.objectweb.asm"
          download-size="0"
          install-size="0"
-         version="3.3.1.v201105211655"/>
+         version="0.0.0"/>
 
    <plugin
          id="org.eclipse.virgo.util.osgi.manifest"
@@ -312,24 +297,45 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.libra.framework.editor.core"
+         id="org.eclipse.virgo.ide.framework.editor.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.virgo.ide.framework.editor.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
          
    <plugin
-         id="org.eclipse.libra.framework.editor.ui"
+         id="org.eclipse.virgo.ide.management.remote"
          download-size="0"
          install-size="0"
          version="0.0.0"
-         unpack="false"/>  
+         unpack="false"/>         
 
    <plugin
          id="org.aspectj.weaver"
          download-size="0"
          install-size="0"
          version="0.0.0"
-         unpack="false"/>    
+         unpack="false"/>
+         
+   <plugin
+         id="org.aspectj.runtime"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.commons.httpclient"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
 </feature>

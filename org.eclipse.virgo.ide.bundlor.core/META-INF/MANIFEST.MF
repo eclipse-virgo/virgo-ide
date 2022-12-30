@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.eclipse.virgo.ide.bundlor.core;singleton:=true
-Bundle-Version: 1.5.3.qualifier
+Bundle-Version: 1.6.0.qualifier
 Bundle-Activator: org.eclipse.virgo.ide.bundlor.internal.core.BundlorCorePlugin
 Bundle-Vendor: %providerName
 Require-Bundle: org.eclipse.core.runtime,
@@ -14,13 +14,15 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.virgo.ide.manifest.core,
  org.eclipse.virgo.ide.bundlor.jdt.core,
  org.eclipse.virgo.util.osgi,
- org.eclipse.virgo.util.common,
  org.eclipse.virgo.util.math,
+ org.eclipse.virgo.util.common,
  org.eclipse.virgo.util.parser.manifest,
- org.eclipse.pde.core,
- org.objectweb.asm;bundle-version="[3.1.0,4.0.0)",
- org.eclipse.virgo.bundlor;bundle-version="1.1.0",
  org.eclipse.virgo.util.osgi.manifest,
+ org.eclipse.pde.core,
+ org.objectweb.asm,
+ org.objectweb.asm.commons,
+ org.objectweb.asm.tree,
+ org.eclipse.virgo.bundlor,
  org.eclipse.m2e.core;bundle-version="1.0.0";resolution:=optional,
  org.eclipse.m2e.maven.runtime;bundle-version="1.0.0";resolution:=optional
 Import-Package: org.apache.commons.lang;version="2.4.0",

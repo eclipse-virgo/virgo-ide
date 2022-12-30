@@ -22,6 +22,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotRadio;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
@@ -33,6 +34,12 @@ import org.hamcrest.Matcher;
  * @author Leo Dos Santos
  */
 public class VirgoIdeTestBot extends SWTWorkbenchBot {
+
+    public VirgoIdeTestBot() {
+        super();
+        SWTBotPreferences.TIMEOUT = 15000;
+
+    }
 
     @SuppressWarnings("unchecked")
     public SWTBotButton buttonInSection(String mnemonicText, String inSection) {

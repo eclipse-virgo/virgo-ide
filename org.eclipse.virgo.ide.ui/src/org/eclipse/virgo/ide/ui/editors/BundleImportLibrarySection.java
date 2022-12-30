@@ -37,10 +37,10 @@ import org.eclipse.virgo.ide.manifest.core.IHeaderConstants;
 import org.eclipse.virgo.ide.manifest.core.editor.model.ImportLibraryHeader;
 import org.eclipse.virgo.ide.manifest.core.editor.model.ImportLibraryObject;
 import org.eclipse.virgo.ide.runtime.core.artefacts.Artefact;
-import org.eclipse.virgo.ide.runtime.core.artefacts.ArtefactRepository;
 import org.eclipse.virgo.ide.runtime.core.artefacts.IArtefact;
 import org.eclipse.virgo.ide.runtime.core.artefacts.LibraryArtefact;
 import org.eclipse.virgo.ide.runtime.core.provisioning.RepositoryUtils;
+import org.eclipse.virgo.ide.ui.ServerIdeUiPlugin;
 
 /**
  * @author Christian Dupuis
@@ -52,15 +52,13 @@ public class BundleImportLibrarySection extends AbstractImportSection {
 
     private static final int ADD_INDEX = 0;
 
-    private static final int ADD_REMOTE_BUNDLE_INDEX = 1;
+    private static final int REMOVE_INDEX = 1;
 
-    private static final int REMOVE_INDEX = 2;
-
-    private static final int PROPERTIES_INDEX = 3;
+    private static final int PROPERTIES_INDEX = 2;
 
     public BundleImportLibrarySection(PDEFormPage page, Composite parent) {
-        super(page, parent, Section.DESCRIPTION, new String[] { PDEUIMessages.ImportPackageSection_add, "Download...",
-            PDEUIMessages.ImportPackageSection_remove, PDEUIMessages.ImportPackageSection_properties });
+        super(page, parent, Section.DESCRIPTION, new String[] { PDEUIMessages.ImportPackageSection_add, PDEUIMessages.ImportPackageSection_remove,
+            PDEUIMessages.ImportPackageSection_properties });
 
         getSection().setText("Import Library");
         getSection().setDescription(DESCRIPTION);
@@ -95,17 +93,12 @@ public class BundleImportLibrarySection extends AbstractImportSection {
         return new ImportLibraryLabelProvider();
     }
 
-    private void setElements(ImportListSelectionDialog dialog, boolean addRemote) {
+    private void setElements(ImportListSelectionDialog dialog) {
         IProject project = ((BundleManifestEditor) this.getPage().getEditor()).getCommonProject();
         IArtefact[] libraries = null;
-        if (addRemote) {
-            ArtefactRepository bundleRepository = RepositoryUtils.searchForArtifacts("", false, true);
-            libraries = bundleRepository.getLibrarySet().toArray();
-        } else {
-            Collection<Artefact> libraryList = RepositoryUtils.getImportLibraryProposals(project, "");
-            removeExistingLibraries(libraryList);
-            libraries = libraryList.toArray(new IArtefact[] {});
-        }
+        Collection<Artefact> libraryList = RepositoryUtils.getImportLibraryProposals(project, "");
+        removeExistingLibraries(libraryList);
+        libraries = libraryList.toArray(new IArtefact[] {});
         dialog.setElements(libraries);
     }
 
@@ -128,19 +121,13 @@ public class BundleImportLibrarySection extends AbstractImportSection {
 
     @Override
     protected void handleAdd() {
-        internalHandleAdd(false);
-        return;
-    }
-
-    private void internalHandleAdd(final boolean addRemote) {
-
         final ImportListSelectionDialog dialog = new ImportListSelectionDialog(PDEPlugin.getActiveWorkbenchShell(),
             new BundleImportDialogLabelProvider());
 
         Runnable runnable = new Runnable() {
 
             public void run() {
-                setElements(dialog, addRemote);
+                setElements(dialog);
                 dialog.setMultipleSelection(true);
                 dialog.setTitle("Library Selection");
                 dialog.setMessage("Select a Library:");
@@ -154,11 +141,7 @@ public class BundleImportLibrarySection extends AbstractImportSection {
 
             Object[] selected = dialog.getResult();
 
-            if (addRemote) {
-                addRemoteLibraries(selected);
-            } else {
-                addLocalLibraries(selected);
-            }
+            addLocalLibraries(selected);
         }
 
     }
@@ -182,53 +165,11 @@ public class BundleImportLibrarySection extends AbstractImportSection {
         }
     }
 
-    private void addRemoteLibraries(Object[] selected) {
-        ImportLibraryHeader importLibraryHeader = (ImportLibraryHeader) getBundle().getManifestHeader(IHeaderConstants.IMPORT_LIBRARY);
-
-        Set<Artefact> remoteArtifactDefinitions = new HashSet<Artefact>(selected.length);
-
-        for (Object currSelectedElement : selected) {
-            remoteArtifactDefinitions.add((Artefact) currSelectedElement);
-        }
-
-        IProject project = ((BundleManifestEditor) this.getPage().getEditor()).getCommonProject();
-        RepositoryUtils.downloadArifacts(remoteArtifactDefinitions, project, Display.getDefault().getActiveShell(), false);
-
-        for (Object currSelectedElement : selected) {
-            LibraryArtefact currLibrary = (LibraryArtefact) currSelectedElement;
-            if (null == importLibraryHeader) {
-                getBundle().setHeader(IHeaderConstants.IMPORT_LIBRARY, "");
-                importLibraryHeader = (ImportLibraryHeader) getBundle().getManifestHeader(IHeaderConstants.IMPORT_LIBRARY);
-            }
-
-            String versionString = null;
-            OsgiVersion osgiVers = currLibrary.getVersion();
-            if (osgiVers.getMajor() != 0 || osgiVers.getMinor() != 0 || osgiVers.getService() != 0
-                || osgiVers.getQualifier() != null && !osgiVers.getQualifier().trim().equals("")) {
-                versionString = "[" + currLibrary.getVersion().toString() + "," + currLibrary.getVersion().toString() + "]";
-            }
-
-            if (importLibraryHeader.hasElement(currLibrary.getSymbolicName())) {
-                importLibraryHeader.removeLibrary(currLibrary.getSymbolicName());
-            }
-            importLibraryHeader.addLibrary(currLibrary.getSymbolicName(), versionString);
-        }
-    }
-
-    @Override
-    protected void handleRemove() {
-        Object[] removed = ((IStructuredSelection) this.fViewer.getSelection()).toArray();
-        for (Object element : removed) {
-            ImportLibraryHeader header = (ImportLibraryHeader) getBundle().getManifestHeader(IHeaderConstants.IMPORT_LIBRARY);
-            header.removeLibrary((ImportLibraryObject) element);
-        }
-    }
-
     class BundleImportDialogLabelProvider extends LabelProvider {
 
         @Override
         public Image getImage(Object element) {
-            return PDEPluginImages.DESC_JAR_LIB_OBJ.createImage();
+            return ServerIdeUiPlugin.getPDEImage(PDEPluginImages.DESC_JAR_LIB_OBJ);
         }
 
         @Override
@@ -262,7 +203,7 @@ public class BundleImportLibrarySection extends AbstractImportSection {
 
         @Override
         public Image getColumnImage(Object element, int columnIndex) {
-            return PDEPluginImages.DESC_JAR_LIB_OBJ.createImage();
+            return ServerIdeUiPlugin.getPDEImage(PDEPluginImages.DESC_JAR_LIB_OBJ);
         }
 
         @Override
@@ -334,11 +275,11 @@ public class BundleImportLibrarySection extends AbstractImportSection {
     }
 
     @Override
-    protected void buttonSelected(int index) {
-        if (index == ADD_REMOTE_BUNDLE_INDEX) {
-            internalHandleAdd(true);
-        } else {
-            super.buttonSelected(index);
+    protected void handleRemove() {
+        Object[] removed = ((IStructuredSelection) this.fViewer.getSelection()).toArray();
+        for (Object element : removed) {
+            ImportLibraryHeader header = (ImportLibraryHeader) getBundle().getManifestHeader(IHeaderConstants.IMPORT_LIBRARY);
+            header.removeLibrary((ImportLibraryObject) element);
         }
     }
 

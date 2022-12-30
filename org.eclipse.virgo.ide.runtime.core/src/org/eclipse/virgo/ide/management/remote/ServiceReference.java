@@ -16,7 +16,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.libra.framework.editor.core.model.IServiceReference;
+import org.eclipse.virgo.ide.framework.editor.core.model.IServiceReference;
 import org.eclipse.virgo.util.common.ObjectUtils;
 
 /**

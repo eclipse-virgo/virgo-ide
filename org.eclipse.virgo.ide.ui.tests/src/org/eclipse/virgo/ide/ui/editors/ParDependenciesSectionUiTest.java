@@ -17,10 +17,13 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.virgo.ide.ui.tests.AbstractManifestUiTestCase;
+import org.junit.FixMethodOrder;
+import org.junit.runners.MethodSorters;
 
 /**
  * @author Leo Dos Santos
  */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ParDependenciesSectionUiTest extends AbstractManifestUiTestCase {
 
     private static String SECTION_LABEL = "Nested Bundles";

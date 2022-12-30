@@ -12,7 +12,7 @@ package org.eclipse.virgo.ide.management.remote;
 
 import java.io.Serializable;
 
-import org.eclipse.libra.framework.editor.core.model.IPackageImport;
+import org.eclipse.virgo.ide.framework.editor.core.model.IPackageImport;
 import org.eclipse.virgo.util.common.ObjectUtils;
 
 /**

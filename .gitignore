@@ -3,5 +3,8 @@ target/
 .metadata
 .classpath
 .project
-.settings
+.settings/
+.vscode/
+.DS_Store
+
 

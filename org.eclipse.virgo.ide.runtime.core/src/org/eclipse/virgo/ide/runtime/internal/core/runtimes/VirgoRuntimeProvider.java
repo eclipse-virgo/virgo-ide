@@ -28,7 +28,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.JavaRuntime;
-import org.eclipse.libra.framework.editor.core.model.IBundle;
+import org.eclipse.virgo.ide.framework.editor.core.model.IBundle;
 import org.eclipse.virgo.ide.runtime.core.IServerBehaviour;
 import org.eclipse.virgo.ide.runtime.core.IServerRuntimeProvider;
 import org.eclipse.virgo.ide.runtime.core.ServerCorePlugin;
@@ -106,7 +106,6 @@ public abstract class VirgoRuntimeProvider implements IServerRuntimeProvider {
         list.add("-XX:+HeapDumpOnOutOfMemoryError");
         list.add("-XX:ErrorFile=\"" + serverHome + "/serviceability/error.log\"");
         list.add("-XX:HeapDumpPath=\"" + serverHome + "/serviceability/heap_dump.hprof\"");
-        list.add("-XX:MaxPermSize=" + ServerUtils.getServer(behaviour).getMaxPermSize());
         list.add("-Djava.rmi.server.hostname=127.0.0.1");
         list.add("-Dorg.eclipse.virgo.kernel.home=\"" + serverHome + "\"");
         list.add("-Djava.io.tmpdir=\"" + serverHome + "/work/tmp/\"");

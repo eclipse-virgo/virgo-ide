@@ -17,7 +17,6 @@ import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
-import org.objectweb.asm.commons.EmptyVisitor;
 
 /**
  * ASM {@link ClassVisitor} for scanning class files.
@@ -25,7 +24,7 @@ import org.objectweb.asm.commons.EmptyVisitor;
  * @author Christian Dupuis
  * @author Rob Harrop
  */
-class ArtefactAnalyserClassVisitor extends EmptyVisitor implements ClassVisitor {
+class ArtefactAnalyserClassVisitor extends ClassVisitor {
 
     private static final String CLASS_NAME_PREFIX = "class$";
 
@@ -45,6 +44,7 @@ class ArtefactAnalyserClassVisitor extends EmptyVisitor implements ClassVisitor 
      * @param partialManifest the <code>PartialManifest</code> to scan.
      */
     public ArtefactAnalyserClassVisitor(PartialManifest partialManifest) {
+        super(Opcodes.ASM9);
         this.partialManifest = partialManifest;
     }
 

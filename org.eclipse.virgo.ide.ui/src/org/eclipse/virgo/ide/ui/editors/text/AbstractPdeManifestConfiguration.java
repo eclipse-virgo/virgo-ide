@@ -171,10 +171,7 @@ public class AbstractPdeManifestConfiguration extends ChangeAwareSourceViewerCon
             rule.addWord(ICoreConstants.FRIENDS_DIRECTIVE, this.fAttributeToken);
             rule.addWord(ICoreConstants.INTERNAL_DIRECTIVE, this.fAttributeToken);
             rule.addWord(ICoreConstants.PACKAGE_SPECIFICATION_VERSION, this.fAttributeToken);
-            // EASTER EGG
-            for (String element : ICoreConstants.EE_TOKENS) {
-                rule.addWord(element, this.fAttributeToken);
-            }
+
             rules[1] = rule;
 
             setRules(rules);
