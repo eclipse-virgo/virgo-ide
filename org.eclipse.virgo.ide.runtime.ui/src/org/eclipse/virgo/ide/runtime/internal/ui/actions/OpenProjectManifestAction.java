@@ -30,6 +30,7 @@ import org.eclipse.virgo.ide.facet.core.FacetCorePlugin;
 import org.eclipse.virgo.ide.facet.core.FacetUtils;
 import org.eclipse.virgo.ide.manifest.core.BundleManifestCorePlugin;
 import org.eclipse.virgo.ide.manifest.core.BundleManifestUtils;
+import org.eclipse.virgo.ide.pde.core.internal.Helper;
 import org.eclipse.virgo.ide.runtime.core.ServerCorePlugin;
 import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
 import org.eclipse.wst.server.core.IModule;
@@ -52,7 +53,9 @@ public class OpenProjectManifestAction implements IObjectActionDelegate {
 
     public void run(IAction action) {
         IProject project = this.selectedModule.getProject();
-        if (FacetUtils.isBundleProject(project)) {
+        if (Helper.forcePDEEditor(project) != null) {
+            openResource(Helper.forcePDEEditor(project));
+        } else if (FacetUtils.isBundleProject(project)) {
             openResource(BundleManifestUtils.locateManifest(JavaCore.create(project), false));
         } else if (FacetUtils.isParProject(project)) {
             openResource(project.findMember(BundleManifestCorePlugin.MANIFEST_FILE_LOCATION));

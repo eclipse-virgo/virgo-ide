@@ -19,7 +19,7 @@ import javax.management.InstanceNotFoundException;
 import javax.management.MBeanServerConnection;
 import javax.management.ObjectName;
 
-import org.eclipse.libra.framework.editor.core.model.IBundle;
+import org.eclipse.virgo.ide.framework.editor.core.model.IBundle;
 import org.eclipse.virgo.ide.runtime.core.IServerBehaviour;
 
 /**

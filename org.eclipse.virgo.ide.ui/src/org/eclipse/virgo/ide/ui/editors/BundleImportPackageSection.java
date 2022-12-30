@@ -10,8 +10,11 @@
 
 package org.eclipse.virgo.ide.ui.editors;
 
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.IPackageFragment;
@@ -37,6 +40,7 @@ import org.eclipse.pde.internal.core.text.bundle.ImportPackageObject;
 import org.eclipse.pde.internal.core.text.bundle.PackageObject;
 import org.eclipse.pde.internal.core.util.PDEJavaHelper;
 import org.eclipse.pde.internal.ui.PDEPlugin;
+import org.eclipse.pde.internal.ui.PDEPluginImages;
 import org.eclipse.pde.internal.ui.PDEUIMessages;
 import org.eclipse.pde.internal.ui.editor.PDEFormPage;
 import org.eclipse.pde.internal.ui.util.SWTUtil;
@@ -49,12 +53,15 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.virgo.ide.bundlerepository.domain.OsgiVersion;
 import org.eclipse.virgo.ide.bundlerepository.domain.PackageExport;
+import org.eclipse.virgo.ide.manifest.core.IHeaderConstants;
 import org.eclipse.virgo.ide.runtime.core.artefacts.Artefact;
 import org.eclipse.virgo.ide.runtime.core.artefacts.ArtefactRepository;
 import org.eclipse.virgo.ide.runtime.core.artefacts.BundleArtefact;
 import org.eclipse.virgo.ide.runtime.core.artefacts.IArtefact;
 import org.eclipse.virgo.ide.runtime.core.artefacts.IArtefactTyped;
+import org.eclipse.virgo.ide.runtime.core.artefacts.LocalBundleArtefact;
 import org.eclipse.virgo.ide.runtime.core.provisioning.RepositoryUtils;
+import org.eclipse.virgo.ide.ui.ServerIdeUiPlugin;
 import org.osgi.framework.Constants;
 import org.osgi.framework.Version;
 
@@ -69,15 +76,13 @@ public class BundleImportPackageSection extends AbstractImportSection {
 
     private static final int ADD_INDEX = 0;
 
-    private static final int ADD_REMOTE_BUNDLE_INDEX = 1;
+    private static final int REMOVE_INDEX = 1;
 
-    private static final int REMOVE_INDEX = 2;
-
-    private static final int PROPERTIES_INDEX = 3;
+    private static final int PROPERTIES_INDEX = 2;
 
     public BundleImportPackageSection(PDEFormPage page, Composite parent) {
-        super(page, parent, Section.DESCRIPTION, new String[] { PDEUIMessages.ImportPackageSection_add, "Download...",
-            PDEUIMessages.ImportPackageSection_remove, PDEUIMessages.ImportPackageSection_properties });
+        super(page, parent, Section.DESCRIPTION, new String[] { PDEUIMessages.ImportPackageSection_add, PDEUIMessages.ImportPackageSection_remove,
+            PDEUIMessages.ImportPackageSection_properties });
         getSection().setText("Import Package");
         getSection().setDescription(DESCRIPTION);
         getTablePart().setEditable(false);
@@ -147,75 +152,6 @@ public class BundleImportPackageSection extends AbstractImportSection {
             manager.add(this.fGoToAction);
         }
         super.fillContextMenu(manager);
-    }
-
-    @Override
-    protected void handleAdd() {
-        internalHandleAdd(false);
-    }
-
-    private void internalHandleAdd(final boolean addRemote) {
-        final ImportListSelectionDialog dialog = new ImportListSelectionDialog(PDEPlugin.getActiveWorkbenchShell(),
-            new BundleImportPackageDialogLabelProvider());
-
-        Runnable runnable = new Runnable() {
-
-            public void run() {
-                if (addRemote) {
-                    setElementsRemote(dialog);
-                } else {
-                    setElementsLocal(dialog);
-                }
-
-                dialog.setMultipleSelection(true);
-                dialog.setMessage(PDEUIMessages.ImportPackageSection_required);
-                dialog.setTitle(PDEUIMessages.ImportPackageSection_selection);
-                dialog.create();
-                SWTUtil.setDialogSize(dialog, 400, 500);
-            }
-        };
-
-        BusyIndicator.showWhile(Display.getCurrent(), runnable);
-        if (dialog.open() == Window.OK) {
-            Object[] selected = dialog.getResult();
-            if (addRemote) {
-                downloadBundlesForSelectedPackages(selected);
-            }
-            addSelectedPackagesToManifest(selected);
-        }
-    }
-
-    private void downloadBundlesForSelectedPackages(Object[] selected) {
-        Set<Artefact> bundleArtefacts = new HashSet<Artefact>();
-        for (Object element : selected) {
-            PackageExport currPackageExport = (PackageExport) element;
-            bundleArtefacts.add(currPackageExport.getBundle());
-        }
-
-        IProject project = ((BundleManifestEditor) this.getPage().getEditor()).getCommonProject();
-        RepositoryUtils.downloadArifacts(bundleArtefacts, project, Display.getDefault().getActiveShell(), true);
-    }
-
-    private void addSelectedPackagesToManifest(Object[] selected) {
-        ImportPackageHeader importPackageHeader = (ImportPackageHeader) getBundle().getManifestHeader(Constants.IMPORT_PACKAGE);
-        for (Object element : selected) {
-            PackageExport currPackage = (PackageExport) element;
-            if (null == importPackageHeader) {
-                getBundle().setHeader(Constants.IMPORT_PACKAGE, "");
-                importPackageHeader = (ImportPackageHeader) getBundle().getManifestHeader(Constants.IMPORT_PACKAGE);
-            }
-
-            String versionString = null;
-            OsgiVersion osgiVers = currPackage.getVersion();
-            if (osgiVers.getMajor() != 0 || osgiVers.getMinor() != 0 || osgiVers.getService() != 0
-                || osgiVers.getQualifier() != null && !osgiVers.getQualifier().trim().equals("")) {
-                versionString = "[" + currPackage.getVersion().toString() + "," + currPackage.getVersion().toString() + "]";
-            }
-
-            ImportPackageObject newPackageObject = new ImportPackageObject(importPackageHeader, currPackage.getName(), versionString,
-                Constants.VERSION_ATTRIBUTE);
-            importPackageHeader.addPackage(newPackageObject);
-        }
     }
 
     @Override
@@ -402,15 +338,6 @@ public class BundleImportPackageSection extends AbstractImportSection {
         }
     }
 
-    @Override
-    protected void buttonSelected(int index) {
-        if (index == ADD_REMOTE_BUNDLE_INDEX) {
-            internalHandleAdd(true);
-        } else {
-            super.buttonSelected(index);
-        }
-    }
-
     class ImportPackageContentProvider implements IStructuredContentProvider {
 
         public void dispose() {
@@ -426,6 +353,95 @@ public class BundleImportPackageSection extends AbstractImportSection {
             } else {
                 return header.getPackages();
             }
+        }
+    }
+
+    @Override
+    protected void handleAdd() {
+
+        final ImportListSelectionDialog dialog = new ImportListSelectionDialog(PDEPlugin.getActiveWorkbenchShell(),
+            new PackageImportDialogLabelProvider());
+
+        Runnable runnable = new Runnable() {
+
+            public void run() {
+                setElements(dialog);
+                dialog.setMultipleSelection(true);
+                dialog.setTitle("Package Selection");
+                dialog.setMessage("Select a Package:");
+                dialog.create();
+                SWTUtil.setDialogSize(dialog, 400, 500);
+            }
+        };
+
+        BusyIndicator.showWhile(Display.getCurrent(), runnable);
+        if (dialog.open() == Window.OK) {
+
+            Object[] selected = dialog.getResult();
+
+            addLocalPackages(selected);
+        }
+
+    }
+
+    private void addLocalPackages(Object[] selected) {
+        ImportPackageHeader importPackageHeader = (ImportPackageHeader) getBundle().getManifestHeader(IHeaderConstants.IMPORT_PACKAGE);
+        for (Object currSelectedElement : selected) {
+            PackageExport currPackage = (PackageExport) currSelectedElement;
+            if (null == importPackageHeader) {
+                getBundle().setHeader(IHeaderConstants.IMPORT_PACKAGE, "");
+                importPackageHeader = (ImportPackageHeader) getBundle().getManifestHeader(IHeaderConstants.IMPORT_PACKAGE);
+            }
+
+            String versionString = null;
+            OsgiVersion osgiVers = currPackage.getVersion();
+            if (osgiVers.getMajor() != 0 || osgiVers.getMinor() != 0 || osgiVers.getService() != 0
+                || osgiVers.getQualifier() != null && !osgiVers.getQualifier().trim().equals("")) {
+                versionString = "[" + currPackage.getVersion().toString() + "," + currPackage.getVersion().toString() + "]";
+            }
+
+            ImportPackageObject pack = importPackageHeader.addPackage(currPackage.getName());
+            pack.setVersion(versionString);
+        }
+    }
+
+    private void setElements(ImportListSelectionDialog dialog) {
+        IProject project = ((BundleManifestEditor) this.getPage().getEditor()).getCommonProject();
+        IArtefact[] bundles = null;
+        Collection<Artefact> bundleList = RepositoryUtils.getImportBundleProposals(project, "");
+        Collection<PackageExport> packageList = new TreeSet<>(new Comparator<PackageExport>() {
+
+            @Override
+            public int compare(PackageExport o1, PackageExport o2) {
+                int result = o1.getName().compareTo(o2.getName());
+                if (result == 0) {
+                    return o1.getVersion().compareTo(o2.getVersion());
+                }
+                return result;
+            }
+        });
+        for (Artefact bundle : bundleList) {
+            packageList.addAll(((LocalBundleArtefact) bundle).getExports());
+        }
+
+        dialog.setElements(packageList.toArray(new PackageExport[packageList.size()]));
+    }
+
+    class PackageImportDialogLabelProvider extends LabelProvider {
+
+        @Override
+        public Image getImage(Object element) {
+            return ServerIdeUiPlugin.getPDEImage(PDEPluginImages.DESC_PACKAGE_OBJ);
+        }
+
+        @Override
+        public String getText(Object element) {
+            PackageExport aPackage = (PackageExport) element;
+            String label = aPackage.getName();
+            if (null != aPackage.getVersion()) {
+                label += " " + aPackage.getVersion(); //$NON-NLS-1$
+            }
+            return label;
         }
     }
 

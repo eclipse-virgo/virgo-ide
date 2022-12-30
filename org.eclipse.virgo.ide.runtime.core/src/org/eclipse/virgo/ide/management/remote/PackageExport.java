@@ -12,7 +12,7 @@ package org.eclipse.virgo.ide.management.remote;
 
 import java.io.Serializable;
 
-import org.eclipse.libra.framework.editor.core.model.IPackageExport;
+import org.eclipse.virgo.ide.framework.editor.core.model.IPackageExport;
 
 /**
  * @author Christian Dupuis

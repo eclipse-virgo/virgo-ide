@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?artifactRepository version='1.1.0'?>
+<repository name='file:////Users/gromanato/git/org.eclipse.virgo.ide/bundlor/repo - artifacts' type='org.eclipse.equinox.p2.artifact.repository.simpleRepository' version='1.0.0'>
+  <properties size='2'>
+    <property name='p2.timestamp' value='1673021376165'/>
+    <property name='p2.compressed' value='false'/>
+  </properties>
+  <mappings size='3'>
+    <rule filter='(&amp; (classifier=osgi.bundle))' output='${repoUrl}/plugins/${id}_${version}.jar'/>
+    <rule filter='(&amp; (classifier=binary))' output='${repoUrl}/binary/${id}_${version}'/>
+    <rule filter='(&amp; (classifier=org.eclipse.update.feature))' output='${repoUrl}/features/${id}_${version}.jar'/>
+  </mappings>
+  <artifacts size='1'>
+    <artifact classifier='osgi.bundle' id='org.eclipse.virgo.bundlor' version='1.1.3.SNAPSHOT'>
+      <properties size='6'>
+        <property name='artifact.size' value='149845'/>
+        <property name='download.size' value='149845'/>
+        <property name='download.md5' value='024344a5ea31a323a871115bc59cef38'/>
+        <property name='download.checksum.sha-512' value='b17c3b734ca8a4ab67ac89e430642e36bb885b01cef47d715b27daf18221d4b01ca8be50e2c398ec3e327d5c79b2670b16773c3bebc9f9fb30aaecff36e1b78a'/>
+        <property name='download.checksum.md5' value='024344a5ea31a323a871115bc59cef38'/>
+        <property name='download.checksum.sha-256' value='3e94d7f971e0d11c28c56845e05658d3dbe15344e38936e18337e014313f159b'/>
+      </properties>
+    </artifact>
+  </artifacts>
+</repository>

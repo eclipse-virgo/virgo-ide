@@ -40,9 +40,6 @@ public interface IServerWorkingCopy extends IServer {
     /** Default filename patters that should not trigger a bundle refresh */
     String DEFAULT_STATIC_FILENAMES = "*.html,*.xhtml,*.css,*.js,*.jspx,*.jsp,*.gif,*.jpg,*.png,*.swf,*-flow.xml,*.properties,*.xml,!tiles.xml,!web.xml";
 
-    /** Default -XX:MaxPermSize value based on Virgo 3.6 dmk.sh */
-    String DEFAULT_MAX_PERM_SIZE = "512m";
-
     /** Default setting if the server should tail trace files */
     boolean DEFAULT_TAIL_LOG_FILES = false;
 
@@ -93,7 +90,5 @@ public interface IServerWorkingCopy extends IServer {
     void setArtefactOrder(List<String> artefactOrder);
 
     void setStaticFilenamePatterns(String filenamePatterns);
-
-    void setMaxPermSize(String maxPermSize);
 
 }

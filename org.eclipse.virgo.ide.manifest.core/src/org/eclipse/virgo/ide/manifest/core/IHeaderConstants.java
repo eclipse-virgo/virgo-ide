@@ -17,6 +17,8 @@ public interface IHeaderConstants {
 
     public String IMPORT_BUNDLE = "Import-Bundle";
 
+    public String IMPORT_PACKAGE = "Import-Package";
+
     public String IMPORT_LIBRARY = "Import-Library";
 
     public String IMPORT_TEMPLATE = "Import-Template";

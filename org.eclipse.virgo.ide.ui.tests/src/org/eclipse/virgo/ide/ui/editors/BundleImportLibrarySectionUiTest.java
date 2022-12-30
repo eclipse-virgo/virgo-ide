@@ -40,27 +40,6 @@ public class BundleImportLibrarySectionUiTest extends AbstractManifestUiTestCase
         addDialog.close();
     }
 
-    public void testDownloadButton() throws Exception {
-        final BundleManifestEditor manifest = openBundleManifestFile("src/META-INF/MANIFEST.MF");
-        UIThreadRunnable.syncExec(new VoidResult() {
-
-            public void run() {
-                manifest.setActivePage(BundleDependenciesPage.PAGE_ID);
-            }
-        });
-
-        SWTBotTable table = this.bot.tableInSection(SECTION_LABEL);
-        int count = table.rowCount();
-        this.bot.flatButtonInSection("Download...", SECTION_LABEL).click();
-
-        SWTBotShell downloadDialog = this.bot.shell("Library Selection");
-        assertTrue(downloadDialog.isOpen());
-
-        this.bot.table().select(0);
-        this.bot.button("OK").click();
-        assertEquals(count + 1, table.rowCount());
-    }
-
     public void testRemoveButton() throws Exception {
         final BundleManifestEditor manifest = openBundleManifestFile("src/META-INF/MANIFEST.MF");
         UIThreadRunnable.syncExec(new VoidResult() {
@@ -102,6 +81,7 @@ public class BundleImportLibrarySectionUiTest extends AbstractManifestUiTestCase
         assertTrue(button.isEnabled());
         button.click();
 
+        text = text.split(" ")[0]; // trim if necessary
         SWTBotShell propertiesDialog = this.bot.shell(text);
         assertTrue(propertiesDialog.isOpen());
         propertiesDialog.close();

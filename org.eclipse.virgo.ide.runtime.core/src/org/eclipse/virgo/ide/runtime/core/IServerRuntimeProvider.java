@@ -18,7 +18,7 @@ import java.util.Map;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
-import org.eclipse.libra.framework.editor.core.model.IBundle;
+import org.eclipse.virgo.ide.framework.editor.core.model.IBundle;
 import org.eclipse.virgo.ide.manifest.core.dependencies.IDependencyLocator;
 import org.eclipse.virgo.ide.manifest.core.dependencies.IDependencyLocator.JavaVersion;
 import org.eclipse.virgo.ide.runtime.internal.core.DeploymentIdentity;

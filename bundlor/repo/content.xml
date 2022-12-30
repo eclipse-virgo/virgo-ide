@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?metadataRepository version='1.2.0'?>
+<repository name='file:////Users/gromanato/git/org.eclipse.virgo.ide/bundlor/repo - metadata' type='org.eclipse.equinox.internal.p2.metadata.repository.LocalMetadataRepository' version='1.0.0'>
+  <properties size='2'>
+    <property name='p2.timestamp' value='1673021376166'/>
+    <property name='p2.compressed' value='false'/>
+  </properties>
+  <units size='1'>
+    <unit id='org.eclipse.virgo.bundlor' version='1.1.3.SNAPSHOT' singleton='false'>
+      <update id='org.eclipse.virgo.bundlor' range='[0.0.0,1.1.3.SNAPSHOT)' severity='0'/>
+      <properties size='1'>
+        <property name='org.eclipse.equinox.p2.name' value='Bundlor Core'/>
+      </properties>
+      <provides size='15'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='org.eclipse.virgo.bundlor' version='1.1.3.SNAPSHOT'/>
+        <provided namespace='osgi.bundle' name='org.eclipse.virgo.bundlor' version='1.1.3.SNAPSHOT'/>
+        <provided namespace='java.package' name='org.eclipse.virgo.bundlor' version='1.1.3.SNAPSHOT'/>
+        <provided namespace='java.package' name='org.eclipse.virgo.bundlor.support' version='1.1.3.SNAPSHOT'/>
+        <provided namespace='java.package' name='org.eclipse.virgo.bundlor.support.asm' version='1.1.3.SNAPSHOT'/>
+        <provided namespace='java.package' name='org.eclipse.virgo.bundlor.support.classpath' version='1.1.3.SNAPSHOT'/>
+        <provided namespace='java.package' name='org.eclipse.virgo.bundlor.support.contributors' version='1.1.3.SNAPSHOT'/>
+        <provided namespace='java.package' name='org.eclipse.virgo.bundlor.support.contributors.xml' version='1.1.3.SNAPSHOT'/>
+        <provided namespace='java.package' name='org.eclipse.virgo.bundlor.support.manifestwriter' version='1.1.3.SNAPSHOT'/>
+        <provided namespace='java.package' name='org.eclipse.virgo.bundlor.support.partialmanifest' version='1.1.3.SNAPSHOT'/>
+        <provided namespace='java.package' name='org.eclipse.virgo.bundlor.support.properties' version='1.1.3.SNAPSHOT'/>
+        <provided namespace='java.package' name='org.eclipse.virgo.bundlor.support.propertysubstitution' version='1.1.3.SNAPSHOT'/>
+        <provided namespace='java.package' name='org.eclipse.virgo.bundlor.util' version='1.1.3.SNAPSHOT'/>
+        <provided namespace='osgi.identity' name='org.eclipse.virgo.bundlor' version='1.1.3.SNAPSHOT'>
+          <properties size='1'>
+            <property name='type' value='osgi.bundle'/>
+          </properties>
+        </provided>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='12'>
+        <required namespace='java.package' name='javax.xml.namespace' range='0.0.0'/>
+        <required namespace='java.package' name='javax.xml.parsers' range='0.0.0'/>
+        <required namespace='java.package' name='javax.xml.xpath' range='0.0.0'/>
+        <required namespace='java.package' name='org.eclipse.virgo.util.common' range='0.0.0'/>
+        <required namespace='java.package' name='org.eclipse.virgo.util.math' range='0.0.0'/>
+        <required namespace='java.package' name='org.eclipse.virgo.util.osgi.manifest' range='0.0.0'/>
+        <required namespace='java.package' name='org.eclipse.virgo.util.osgi.manifest.parse' range='0.0.0'/>
+        <required namespace='java.package' name='org.eclipse.virgo.util.parser.manifest' range='0.0.0'/>
+        <required namespace='java.package' name='org.objectweb.asm' range='0.0.0'/>
+        <required namespace='java.package' name='org.osgi.framework' range='0.0.0'/>
+        <required namespace='java.package' name='org.w3c.dom' range='0.0.0'/>
+        <required namespace='java.package' name='org.xml.sax' range='0.0.0'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='org.eclipse.virgo.bundlor' version='1.1.3.SNAPSHOT'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-SymbolicName: org.eclipse.virgo.bundlor&#xA;Bundle-Version: 1.1.3.SNAPSHOT&#xA;
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+  </units>
+</repository>

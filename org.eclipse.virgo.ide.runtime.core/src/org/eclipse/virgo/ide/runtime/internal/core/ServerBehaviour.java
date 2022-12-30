@@ -43,9 +43,9 @@ import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.JavaRuntime;
-import org.eclipse.libra.framework.editor.core.IOSGiFrameworkAdmin;
-import org.eclipse.libra.framework.editor.core.IOSGiFrameworkConsole;
-import org.eclipse.libra.framework.editor.core.model.IBundle;
+import org.eclipse.virgo.ide.framework.editor.core.IOSGiFrameworkAdmin;
+import org.eclipse.virgo.ide.framework.editor.core.IOSGiFrameworkConsole;
+import org.eclipse.virgo.ide.framework.editor.core.model.IBundle;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IOConsoleOutputStream;
@@ -126,9 +126,7 @@ public class ServerBehaviour extends ServerBehaviourDelegate implements IServerB
             return;
         }
 
-        Iterator<IModule[]> iterator = getAllModules().iterator();
-        while (iterator.hasNext()) {
-            IModule[] module = iterator.next();
+        for (IModule[] module : getAllModules()) {
             IModuleResourceDelta[] delta = getPublishedResourceDelta(module);
             if (delta == null || delta.length == 0) {
                 continue;
@@ -206,13 +204,13 @@ public class ServerBehaviour extends ServerBehaviourDelegate implements IServerB
 
             IPath jrePath = new Path(vmInstall.getInstallLocation().getAbsolutePath());
             if (jrePath != null) {
-                IPath toolsPath = jrePath.append("lib").append("tools.jar");
+                IPath toolsPath = jrePath.append("lib").append("tools.jar"); //$NON-NLS-1$ //$NON-NLS-2$
                 if (toolsPath.toFile().exists()) {
                     IRuntimeClasspathEntry toolsJar = JavaRuntime.newArchiveRuntimeClasspathEntry(toolsPath);
                     int toolsIndex;
                     for (toolsIndex = 0; toolsIndex < oldCp.size(); toolsIndex++) {
                         IRuntimeClasspathEntry entry = oldCp.get(toolsIndex);
-                        if (entry.getType() == IRuntimeClasspathEntry.ARCHIVE && entry.getPath().lastSegment().equals("tools.jar")) {
+                        if (entry.getType() == IRuntimeClasspathEntry.ARCHIVE && entry.getPath().lastSegment().equals("tools.jar")) { //$NON-NLS-1$
                             break;
                         }
                     }

@@ -21,7 +21,6 @@ import org.eclipse.virgo.ide.manifest.core.dependencies.IDependencyLocator;
 import org.eclipse.virgo.ide.manifest.core.dependencies.IDependencyLocator.JavaVersion;
 import org.eclipse.virgo.ide.runtime.core.IServerBehaviour;
 import org.eclipse.virgo.ide.runtime.core.IServerRuntimeProvider;
-import org.eclipse.virgo.ide.runtime.core.ServerCorePlugin;
 import org.eclipse.virgo.ide.runtime.core.ServerUtils;
 import org.eclipse.virgo.kernel.osgi.provisioning.tools.Pre35DependencyLocatorVirgo;
 import org.eclipse.wst.server.core.IRuntime;
@@ -37,11 +36,10 @@ public class Virgo21_30Provider extends VirgoRuntimeProvider {
     // Assumes Stateless
     public static final VirgoRuntimeProvider INSTANCE = new Virgo21_30Provider();
 
-    public static final String LEGACY_CONNECTOR_BUNDLE_NAME = "org.eclipse.virgo.ide.management.remote_1.0.0.201203091803.jar"; //$NON-NLS-1$
-
     private Virgo21_30Provider() {
     }
 
+    @Override
     public boolean isHandlerFor(IRuntime runtime) {
         IPath configPath = runtime.getLocation().append(getConfigurationDir());
         File configDir = configPath.toFile();
@@ -86,7 +84,7 @@ public class Virgo21_30Provider extends VirgoRuntimeProvider {
     }
 
     public URI getConnectorBundleUri() {
-        return ServerCorePlugin.getDefault().getBundleUri(LEGACY_CONNECTOR_BUNDLE_NAME);
+        return null; // no more supported as of late 2022
     }
 
     /**

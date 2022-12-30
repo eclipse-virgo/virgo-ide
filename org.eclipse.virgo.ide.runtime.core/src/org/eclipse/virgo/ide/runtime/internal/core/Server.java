@@ -26,7 +26,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.SubProgressMonitor;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jst.server.core.FacetUtil;
 import org.eclipse.jst.server.core.IWebModule;
@@ -70,7 +70,7 @@ public class Server extends ServerDelegate implements IServer, IServerWorkingCop
     }
 
     protected String getServerName() {
-        return "SpringSource dm Server";
+        return "Eclipse Virgo Server"; //$NON-NLS-1$
     }
 
     @Override
@@ -83,13 +83,13 @@ public class Server extends ServerDelegate implements IServer, IServerWorkingCop
                     && !FacetCorePlugin.BUNDLE_FACET_ID.equals(module.getModuleType().getId())
                     && !FacetCorePlugin.PAR_FACET_ID.equals(module.getModuleType().getId())
                     && !FacetCorePlugin.PLAN_FACET_ID.equals(module.getModuleType().getId())) {
-                    return new Status(IStatus.ERROR, ServerCorePlugin.PLUGIN_ID, 0, "SpringSource par or bundle projects only", null);
+                    return new Status(IStatus.ERROR, ServerCorePlugin.PLUGIN_ID, 0, "Virgo par or bundle projects only", null); //$NON-NLS-1$
                 }
 
                 IProject project = module.getProject();
                 // Check that nested par module is not displayed
                 if (module.getId().endsWith("$" + project.getName())) {
-                    return new Status(IStatus.ERROR, ServerCorePlugin.PLUGIN_ID, 0, "No nested par modules allowed", null);
+                    return new Status(IStatus.ERROR, ServerCorePlugin.PLUGIN_ID, 0, "No nested par modules allowed", null); //$NON-NLS-1$
                 }
 
                 // Check that shared war is only deployed as WAR
@@ -97,14 +97,14 @@ public class Server extends ServerDelegate implements IServer, IServerWorkingCop
                     if (FacetUtils.hasNature(project, JavaCore.NATURE_ID)
                         && FacetedProjectFramework.hasProjectFacet(project, FacetCorePlugin.WEB_FACET_ID) && FacetUtils.isBundleProject(project)
                         && FacetCorePlugin.BUNDLE_FACET_ID.equals(module.getModuleType().getId())) {
-                        return new Status(IStatus.ERROR, ServerCorePlugin.PLUGIN_ID, 0, "Shared WAR deploy only as jst.web modules", null);
+                        return new Status(IStatus.ERROR, ServerCorePlugin.PLUGIN_ID, 0, "Shared WAR deploy only as jst.web modules", null); //$NON-NLS-1$
                     }
                 } catch (CoreException e) {
-                    return new Status(IStatus.ERROR, ServerCorePlugin.PLUGIN_ID, 0, "Core Exception when resolving project: ", e);
+                    return new Status(IStatus.ERROR, ServerCorePlugin.PLUGIN_ID, 0, "Core Exception when resolving project: ", e); //$NON-NLS-1$
                 }
 
                 if (getVersionHandler() == null) {
-                    return new Status(IStatus.ERROR, ServerCorePlugin.PLUGIN_ID, 0, "No " + getServerName() + " runtime configured", null);
+                    return new Status(IStatus.ERROR, ServerCorePlugin.PLUGIN_ID, 0, "No " + getServerName() + " runtime configured", null); //$NON-NLS-1$//$NON-NLS-2$
                 }
 
                 IStatus status = getVersionHandler().canAddModule(module);
@@ -113,7 +113,7 @@ public class Server extends ServerDelegate implements IServer, IServerWorkingCop
                 }
 
                 if (module.getProject() == null || !module.getProject().isAccessible()) {
-                    return new Status(IStatus.ERROR, ServerCorePlugin.PLUGIN_ID, 0, "Project not accessible", null);
+                    return new Status(IStatus.ERROR, ServerCorePlugin.PLUGIN_ID, 0, "Project not accessible", null); //$NON-NLS-1$
                 }
 
                 status = FacetUtil.verifyFacets(module.getProject(), getServer());
@@ -199,19 +199,15 @@ public class Server extends ServerDelegate implements IServer, IServerWorkingCop
         return getAttribute(PROPERTY_MBEAN_SERVER_USERNAME, DEFAULT_MBEAN_SERVER_USERNAME);
     }
 
-    public String getMaxPermSize() {
-        return getAttribute(PROPERTY_MAX_PERM_SIZE, DEFAULT_MAX_PERM_SIZE);
-    }
-
     public IPath getModuleDeployDirectory(IModule module) {
         if (FacetCorePlugin.BUNDLE_FACET_ID.equals(module.getModuleType().getId())) {
-            return getServerDeployDirectory().append(module.getName() + ".jar");
+            return getServerDeployDirectory().append(module.getName() + ".jar"); //$NON-NLS-1$
         } else if (FacetCorePlugin.PAR_FACET_ID.equals(module.getModuleType().getId())) {
-            return getServerDeployDirectory().append(module.getName() + ".par");
+            return getServerDeployDirectory().append(module.getName() + ".par"); //$NON-NLS-1$
         } else if (FacetCorePlugin.PLAN_FACET_ID.equals(module.getModuleType().getId())) {
             return getServerDeployDirectory();
         } else {
-            return getServerDeployDirectory().append(module.getName() + ".war");
+            return getServerDeployDirectory().append(module.getName() + ".war"); //$NON-NLS-1$
         }
     }
 
@@ -292,9 +288,9 @@ public class Server extends ServerDelegate implements IServer, IServerWorkingCop
                         // Add this server's runtime to the target runtime
                         if (!runtimes.contains(runtime)) {
                             runtimes.add(runtime);
-                            project.setTargetedRuntimes(runtimes, new SubProgressMonitor(monitor, 1));
+                            project.setTargetedRuntimes(runtimes, SubMonitor.convert(monitor, 1));
                             if (runtimes.size() > 1) {
-                                project.setPrimaryRuntime(runtime, new SubProgressMonitor(monitor, 1));
+                                project.setPrimaryRuntime(runtime, SubMonitor.convert(monitor, 1));
                             }
                         }
                     }
@@ -359,12 +355,6 @@ public class Server extends ServerDelegate implements IServer, IServerWorkingCop
         fireConfigurationChanged(PROPERTY_MBEAN_SERVER_USERNAME, oldPassword, username);
     }
 
-    public void setMaxPermSize(String maxPermSize) {
-        String oldMaxPermSize = getMaxPermSize();
-        setAttribute(PROPERTY_MAX_PERM_SIZE, maxPermSize);
-        fireConfigurationChanged(PROPERTY_MAX_PERM_SIZE, oldMaxPermSize, maxPermSize);
-    }
-
     public boolean shouldTailTraceFiles() {
         return getAttribute(PROPERTY_TAIL_LOG_FILES, DEFAULT_TAIL_LOG_FILES);
     }
@@ -412,7 +402,7 @@ public class Server extends ServerDelegate implements IServer, IServerWorkingCop
 
     protected String renderCommandLine(String[] commandLine, String separator) {
         if (commandLine == null || commandLine.length < 1) {
-            return "";
+            return ""; //$NON-NLS-1$
         }
         StringBuffer buf = new StringBuffer(commandLine[0]);
         for (int i = 1; i < commandLine.length; i++) {

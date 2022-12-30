@@ -10,6 +10,8 @@
 
 package org.eclipse.virgo.ide.ui;
 
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -76,7 +78,18 @@ public class ServerIdeUiPlugin extends AbstractUIPlugin {
     @Override
     public void stop(BundleContext context) throws Exception {
         plugin = null;
+        for (Image i : cache.values()) {
+            if (!i.isDisposed()) {
+                i.dispose();
+            }
+        }
         super.stop(context);
+    }
+
+    private final static ConcurrentHashMap<ImageDescriptor, Image> cache = new ConcurrentHashMap<>(89);
+
+    public static Image getPDEImage(ImageDescriptor descriptor) {
+        return cache.computeIfAbsent(descriptor, (f) -> f.createImage(true));
     }
 
     public static Image getImage(String path) {

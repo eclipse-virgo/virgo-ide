@@ -11,16 +11,8 @@
 package org.eclipse.virgo.ide.runtime.internal.ui.editor;
 
 import java.text.DateFormat;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.Locale;
-import java.util.Set;
 
-import org.eclipse.core.runtime.jobs.IJobChangeEvent;
-import org.eclipse.core.runtime.jobs.IJobChangeListener;
-import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.viewers.AbstractTreeViewer;
@@ -48,17 +40,8 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.forms.widgets.TableWrapData;
 import org.eclipse.ui.forms.widgets.TableWrapLayout;
 import org.eclipse.ui.navigator.CommonViewer;
-import org.eclipse.ui.progress.IProgressConstants;
 import org.eclipse.virgo.ide.runtime.core.ServerCorePlugin;
-import org.eclipse.virgo.ide.runtime.core.artefacts.Artefact;
-import org.eclipse.virgo.ide.runtime.core.artefacts.ArtefactRepository;
-import org.eclipse.virgo.ide.runtime.core.artefacts.ArtefactRepositoryManager;
-import org.eclipse.virgo.ide.runtime.core.artefacts.IArtefactTyped;
-import org.eclipse.virgo.ide.runtime.core.artefacts.LocalBundleArtefact;
 import org.eclipse.virgo.ide.runtime.core.provisioning.IBundleRepositoryChangeListener;
-import org.eclipse.virgo.ide.runtime.core.provisioning.RepositoryProvisioningJob;
-import org.eclipse.virgo.ide.runtime.core.provisioning.RepositorySourceProvisiongJob;
-import org.eclipse.virgo.ide.runtime.core.provisioning.RepositoryUtils;
 import org.eclipse.virgo.ide.runtime.internal.ui.ServerUiImages;
 import org.eclipse.virgo.ide.runtime.internal.ui.ServerUiPlugin;
 import org.eclipse.virgo.ide.runtime.internal.ui.repository.RefreshBundleJob;
@@ -75,21 +58,13 @@ import org.eclipse.wst.server.ui.editor.ServerEditorPart;
  */
 public class RepositoryBrowserEditorPage extends ServerEditorPart implements ISelectionChangedListener {
 
-    private static final DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
-
-    private final IJobChangeListener jobListener = new ArtefactOperationJobListener();
-
     private Button refreshButton;
 
     private CommonViewer repositoryTableViewer;
 
-    private Button downloadSourcesButton;
-
     private Tree searchResultTable;
 
     private Shell shell;
-
-    private Link update;
 
     private IBundleRepositoryChangeListener repositoryListener;
 
@@ -123,8 +98,6 @@ public class RepositoryBrowserEditorPage extends ServerEditorPart implements ISe
     @Override
     public void dispose() {
         super.dispose();
-
-        Job.getJobManager().removeJobChangeListener(this.jobListener);
         ServerCorePlugin.getArtefactRepositoryManager().removeBundleRepositoryChangeListener(this.repositoryListener);
     }
 
@@ -140,12 +113,6 @@ public class RepositoryBrowserEditorPage extends ServerEditorPart implements ISe
         if (this.searchResultTable != null) {
             this.searchResultTable.setFocus();
         }
-    }
-
-    private void setRepositoryDateString() {
-        Date date = ServerCorePlugin.getArtefactRepositoryManager().getArtefactRepositoryDate();
-        String dateString = dateFormat.format(date);
-        this.update.setText(Messages.RepositoryBrowserEditorPage_UpdateURL + dateString + ")"); //$NON-NLS-1$
     }
 
     protected String getServerName() {
@@ -203,17 +170,6 @@ public class RepositoryBrowserEditorPage extends ServerEditorPart implements ISe
             }
         });
 
-        this.downloadSourcesButton = toolkit.createButton(buttonComposite, Messages.RepositoryBrowserEditorPage_InstallSources, SWT.PUSH);
-        this.downloadSourcesButton.setLayoutData(data);
-        this.downloadSourcesButton.setToolTipText(Messages.RepositoryBrowserEditorPage_InstallSourcesMessage);
-        this.downloadSourcesButton.addSelectionListener(new SelectionAdapter() {
-
-            @Override
-            public void widgetSelected(SelectionEvent selectionEvent) {
-                downloadSources();
-            }
-        });
-
         // insert vertical space to make the download button stand out
         toolkit.createLabel(buttonComposite, Messages.RepositoryBrowserEditorPage_40);
 
@@ -246,26 +202,7 @@ public class RepositoryBrowserEditorPage extends ServerEditorPart implements ISe
         RefreshBundleJob.execute(this.shell, getServer().getRuntime());
     }
 
-    protected void downloadSources() {
-        Set<Artefact> artifacts = new LinkedHashSet<Artefact>();
-        ArtefactRepository repository = RepositoryUtils.getRepositoryContents(this.server.getRuntime());
-        for (IArtefactTyped bundle : repository.getBundles()) {
-            if (bundle instanceof LocalBundleArtefact) {
-                if (!((LocalBundleArtefact) bundle).isSourceDownloaded()) {
-                    artifacts.add((LocalBundleArtefact) bundle);
-                }
-            }
-        }
-        Set<IRuntime> runtimes = new HashSet<IRuntime>();
-        runtimes.add(getServer().getRuntime());
-        RepositorySourceProvisiongJob operation = new RepositorySourceProvisiongJob(runtimes, artifacts);
-        operation.setProperty(IProgressConstants.ICON_PROPERTY, ServerUiImages.DESC_OBJ_BUNDLE);
-        operation.schedule();
-    }
-
     protected void addListeners() {
-        Job.getJobManager().addJobChangeListener(this.jobListener);
-
         this.repositoryListener = new IBundleRepositoryChangeListener() {
 
             public void bundleRepositoryChanged(IRuntime runtime) {
@@ -309,27 +246,6 @@ public class RepositoryBrowserEditorPage extends ServerEditorPart implements ISe
                 }
             }
         });
-    }
-
-    private final class ArtefactOperationJobListener extends JobChangeAdapter {
-
-        @Override
-        public void done(IJobChangeEvent event) {
-            if (event.getJob() instanceof RepositoryProvisioningJob) {
-                if (((RepositoryProvisioningJob) event.getJob()).getRuntimes().contains(getServer().getRuntime())) {
-                    refreshViewers();
-                }
-            } else if (event.getJob() instanceof ArtefactRepositoryManager.ArtefactRepositoryUpdateJob) {
-                RepositoryBrowserEditorPage.this.shell.getDisplay().asyncExec(new Runnable() {
-
-                    public void run() {
-                        if (RepositoryBrowserEditorPage.this.update != null && !RepositoryBrowserEditorPage.this.update.isDisposed()) {
-                            setRepositoryDateString();
-                        }
-                    }
-                });
-            }
-        }
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })

@@ -140,11 +140,6 @@ public class BundleManifestConfiguration extends AbstractPdeManifestConfiguratio
             rule.addWord(ICoreConstants.INTERNAL_DIRECTIVE, this.fAttributeToken);
             rule.addWord(ICoreConstants.PACKAGE_SPECIFICATION_VERSION, this.fAttributeToken);
 
-            // EASTER EGG
-            for (String element : ICoreConstants.EE_TOKENS) {
-                rule.addWord(element, this.fAttributeToken);
-            }
-
             addRulesForAttributes(rule);
             rules[1] = rule;
 

@@ -33,7 +33,7 @@ public class ModifyCleanStartupCommand extends AbstractOperation {
     private final boolean newValue;
 
     public ModifyCleanStartupCommand(IServerWorkingCopy workingCopy, boolean newValue) {
-        super("Modify Clean Startup");
+        super("Modify Clean Startup"); //$NON-NLS-1$
         this.workingCopy = workingCopy;
         this.oldValue = workingCopy.shouldCleanStartup();
         this.newValue = newValue;
