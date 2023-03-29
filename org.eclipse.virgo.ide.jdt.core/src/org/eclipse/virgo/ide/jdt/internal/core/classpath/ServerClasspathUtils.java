@@ -15,6 +15,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -59,7 +60,7 @@ class ServerClasspathUtils {
 
             // Write the contents of the StringBuilder
             os = new FileOutputStream(file);
-            os.write(builder.toString().getBytes("UTF-8"));
+            os.write(builder.toString().getBytes(StandardCharsets.UTF_8.name()));
             os.flush();
         } catch (UnsupportedEncodingException e) {
             // can't happen as default UTF-8 is used
@@ -112,7 +113,7 @@ class ServerClasspathUtils {
         if (file.exists()) {
             try {
                 byte[] bytes = FileCopyUtils.copyToByteArray(file);
-                xmlClasspath = new String(bytes, org.eclipse.jdt.internal.compiler.util.Util.UTF_8);
+                xmlClasspath = new String(bytes, StandardCharsets.UTF_8.name());
             } catch (UnsupportedEncodingException e) {
                 // can't happen as default UTF-8 is used
             } catch (IOException e) {
