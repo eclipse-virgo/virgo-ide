@@ -14,7 +14,7 @@
 		<site-dir></site-dir>
 		<skip-promote>true</skip-promote>
 		<test.osvmargs></test.osvmargs>
-		<tycho-version>3.0.1</tycho-version>
+		<tycho-version>3.0.5</tycho-version>
 		<signer-version>1.1.5</signer-version>
 	</properties>
 
@@ -117,7 +117,7 @@
 		<repository>
 			<id>eclipse</id>
 			<layout>p2</layout>
-			<url>https://download.eclipse.org/releases/2023-06/</url>
+			<url>https://download.eclipse.org/releases/2023-09/</url>
 		</repository>
 		<repository>
 			<id>m2e</id>
@@ -125,9 +125,9 @@
 			<url>https://download.eclipse.org/technology/m2e/releases/latest</url>
 		</repository>
 		<repository>
-			<id>orbit_23</id>
+			<id>orbit_2303</id>
 			<layout>p2</layout>
-			<url>		https://download.eclipse.org/tools/orbit/downloads/drops/R20230302014618/repository/</url>
+			<url>https://download.eclipse.org/tools/orbit/downloads/drops/R20230302014618/repository/</url>
 		</repository>
 		<repository>
 			<id>orbit_22</id>
@@ -136,15 +136,15 @@
 		</repository>
 
 		<repository>
-			<id>orbit</id>
+			<id>orbit_202305</id>
 			<layout>p2</layout>
-			<url>https://download.eclipse.org/tools/orbit/downloads/drops/R20220302172233/repository</url>
+			<url>https://download.eclipse.org/tools/orbit/downloads/drops/R20230531010532/repository</url>
 		</repository>
 
 		<repository>
 			<id>ajdt</id>
 			<layout>p2</layout>
-			<url>https://download.eclipse.org/tools/ajdt/423/dev/update/</url>
+			<url>https://download.eclipse.org/tools/ajdt/426/dev/update/</url>
 		</repository>
 		<repository>
 			<id>swtbot</id>
