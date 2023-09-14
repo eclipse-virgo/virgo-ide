@@ -12,9 +12,9 @@ The Virgo Web Server from EclipseRT is a completely module-based Java applicatio
 
 ## Installation instructions:
 
-Install the Virgo Tools feature in Eclipse via the usual  _Help -> Install New Software_  dialog.
-Once installed in Eclipse, your Eclipse will offer a new perspective dedicated to the Virgo Web Server as well as new Wizards for creating server runtimes and projects.
+Check the wiki pages here on github for installation details.
 
+Once installed in Eclipse, your Eclipse will offer a new perspective dedicated to the Virgo Web Server as well as new Wizards for creating server runtimes and projects.
 Please refer to the included documentation available via the Eclipse  _Help_  menu to find out how to use the Virgo Tools.
 
 
