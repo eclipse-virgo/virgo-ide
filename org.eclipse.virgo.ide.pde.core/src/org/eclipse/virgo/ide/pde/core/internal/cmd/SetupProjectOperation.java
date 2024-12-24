@@ -121,6 +121,10 @@ public class SetupProjectOperation extends AbstractOperation implements IWorkspa
         addNatures(project);
         monitor.worked(1);
 
+        IBundleProjectDescription bundleDescription = service.getDescription(project);
+        // remove execution environment
+        bundleDescription.setExecutionEnvironments(new String[0]);
+
         if (contextRoot != null && contextRoot.length() > 0) {
             IPath webContentPath = configureWABClasspath(project);
 
@@ -129,18 +133,17 @@ public class SetupProjectOperation extends AbstractOperation implements IWorkspa
             createIndexHTML(contextRoot, webContentPath);
             createBuildProperties();
 
-            IBundleProjectDescription bundleDescription = service.getDescription(project);
-
             bundleDescription.setHeader(HEADER_WEB_CONTEXT_PATH, SLASH + contextRoot);
             bundleDescription.setHeader(HEADER_BUNDLE_CLASS_PATH, CLASS_PATH_VALUE);
-            bundleDescription.apply(null);
         }
+        bundleDescription.apply(null);
         monitor.worked(1);
 
         IFacetedProject fProject = ProjectFacetsManager.create(project.getProject(), true, null);
         fProject.installProjectFacet(ProjectFacetsManager.getProjectFacet(FacetCorePlugin.BUNDLE_FACET_ID).getDefaultVersion(), null, null);
         monitor.worked(1);
         monitor.done();
+
     }
 
     private void createBuildProperties() throws CoreException {
@@ -195,7 +198,7 @@ public class SetupProjectOperation extends AbstractOperation implements IWorkspa
     }
 
     private IPath configureWABClasspath(IProject project) throws CoreException, JavaModelException {
-        IJavaProject javaProject = (IJavaProject) project.getNature(JavaCore.NATURE_ID);
+        IJavaProject javaProject = JavaCore.create(project);
         javaProject.setOutputLocation(project.getFullPath().append(BIN), null);
         IClasspathEntry[] entries = javaProject.getRawClasspath();
         IClasspathEntry[] newEntries = new IClasspathEntry[entries.length + 1];

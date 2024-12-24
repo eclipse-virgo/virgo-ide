@@ -31,7 +31,11 @@ Important attention points:
   in Virgo, not in Eclipse
 - the execution environment of this bundle and the Java level
   must remain the same as Virgo Server or lower, otherwise
-  the Jar won't be resolved in Virgo at runtime.
+  the Jar won't be resolved in Virgo at runtime. As of Eclipse 2024-12
+  JavaSE7 is no more supported for compiling. Virgo can run with Java8
+  but declares to support only JavaSE7, as such I am removing the
+  execution environment header from MANIFEST.MF to make this bundle
+  deployable and runnable in Virgo
 - Virgo still ships with a very dated version of Felix Gogo Shell
   and Eclipse 2022 and later includes a newer version of the same.
   One of the methods that the JMX bridge uses to execute shell commands

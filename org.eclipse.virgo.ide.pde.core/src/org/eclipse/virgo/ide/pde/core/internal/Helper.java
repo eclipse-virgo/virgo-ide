@@ -182,7 +182,7 @@ public class Helper {
      * @throws CoreException
      */
     /* package */ static IPath getOutputLocation(IProject project) throws CoreException {
-        IJavaProject jp = (IJavaProject) project.getNature(JavaCore.NATURE_ID);
+        IJavaProject jp = JavaCore.create(project);
         IPath outputLocation = jp.getOutputLocation();
 
         if (outputLocation == null) {

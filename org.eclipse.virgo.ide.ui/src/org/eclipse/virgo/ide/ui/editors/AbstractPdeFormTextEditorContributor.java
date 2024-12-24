@@ -23,7 +23,6 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.pde.internal.ui.PDEUIMessages;
 import org.eclipse.pde.internal.ui.editor.PDEFormEditorContributor;
-import org.eclipse.pde.internal.ui.editor.PDEProjectionSourcePage;
 import org.eclipse.pde.internal.ui.editor.PDESourcePage;
 import org.eclipse.pde.internal.ui.editor.actions.HyperlinkAction;
 import org.eclipse.pde.internal.ui.editor.actions.PDEActionConstants;
@@ -240,46 +239,47 @@ public class AbstractPdeFormTextEditorContributor extends PDEFormEditorContribut
      *
      */
     protected void updateQuickOutlineMenuEntry() {
-        // Get the main action bar
-        IActionBars actionBars = getActionBars();
-        IMenuManager menuManager = actionBars.getMenuManager();
-        // Get the navigate menu
-        IMenuManager navigateMenu = menuManager.findMenuUsingPath(IWorkbenchActionConstants.M_NAVIGATE);
-        // Ensure there is a navigate menu
-        if (navigateMenu == null) {
-            return;
-        }
-        // Remove the previous version of the quick outline menu entry - if
-        // one exists
-        // Prevent duplicate menu entries
-        // Prevent wrong quick outline menu from being brought up for the wrong
-        // page
-        navigateMenu.remove(PDEActionConstants.COMMAND_ID_QUICK_OUTLINE);
-        // Ensure the active page is a source page
-        // Only add the quick outline menu to the source pages
-        if (this.fPage instanceof PDEProjectionSourcePage == false) {
-            return;
-        }
-        PDEProjectionSourcePage page = (PDEProjectionSourcePage) this.fPage;
-        // Only add the action if the source page supports it
-        if (page.isQuickOutlineEnabled() == false) {
-            return;
-        }
-        // Get the appropriate quick outline action associated with the active
-        // source page
-        IAction quickOutlineAction = page.getAction(PDEActionConstants.COMMAND_ID_QUICK_OUTLINE);
-        // Ensure it is defined
-        if (quickOutlineAction == null) {
-            return;
-        }
-        // Add the quick outline action after the "Show In" menu contributed
-        // by JDT
-        // This could break if JDT changes the "Show In" menu ID
-        try {
-            navigateMenu.insertAfter("showIn", quickOutlineAction); //$NON-NLS-1$
-        } catch (IllegalArgumentException e) {
-            // Ignore
-        }
+        // Not possible starting from Eclipse 2024-12
+        // // Get the main action bar
+        // IActionBars actionBars = getActionBars();
+        // IMenuManager menuManager = actionBars.getMenuManager();
+        // // Get the navigate menu
+        // IMenuManager navigateMenu = menuManager.findMenuUsingPath(IWorkbenchActionConstants.M_NAVIGATE);
+        // // Ensure there is a navigate menu
+        // if (navigateMenu == null) {
+        // return;
+        // }
+        // // Remove the previous version of the quick outline menu entry - if
+        // // one exists
+        // // Prevent duplicate menu entries
+        // // Prevent wrong quick outline menu from being brought up for the wrong
+        // // page
+        // navigateMenu.remove(PDEActionConstants.COMMAND_ID_QUICK_OUTLINE);
+        // // Ensure the active page is a source page
+        // // Only add the quick outline menu to the source pages
+        // if (this.fPage instanceof PDEProjectionSourcePage == false) {
+        // return;
+        // }
+        // PDEProjectionSourcePage page = (PDEProjectionSourcePage) this.fPage;
+        // // Only add the action if the source page supports it
+        // if (page.isQuickOutlineEnabled() == false) {
+        // return;
+        // }
+        // // Get the appropriate quick outline action associated with the active
+        // // source page
+        // IAction quickOutlineAction = page.getAction(PDEActionConstants.COMMAND_ID_QUICK_OUTLINE);
+        // // Ensure it is defined
+        // if (quickOutlineAction == null) {
+        // return;
+        // }
+        // // Add the quick outline action after the "Show In" menu contributed
+        // // by JDT
+        // // This could break if JDT changes the "Show In" menu ID
+        // try {
+        // navigateMenu.insertAfter("showIn", quickOutlineAction); //$NON-NLS-1$
+        // } catch (IllegalArgumentException e) {
+        // // Ignore
+        // }
     }
 
     protected TextEditorActionContributor createSourceContributor() {

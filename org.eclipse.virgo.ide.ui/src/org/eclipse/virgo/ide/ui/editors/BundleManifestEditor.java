@@ -52,7 +52,6 @@ import org.eclipse.pde.internal.ui.editor.JarEntryEditorInput;
 import org.eclipse.pde.internal.ui.editor.JarEntryFile;
 import org.eclipse.pde.internal.ui.editor.ModelDataTransfer;
 import org.eclipse.pde.internal.ui.editor.PDEFormEditor;
-import org.eclipse.pde.internal.ui.editor.PDESourcePage;
 import org.eclipse.pde.internal.ui.editor.context.InputContextManager;
 import org.eclipse.pde.internal.ui.editor.plugin.BundleInputContext;
 import org.eclipse.pde.internal.ui.editor.plugin.ManifestEditor;
@@ -103,8 +102,7 @@ public class BundleManifestEditor extends ManifestEditor {
     public IEditorPart[] getParts() {
         ArrayList<IEditorPart> parts = new ArrayList<IEditorPart>(getPageCount());
         if (this.pages != null) {
-            for (int i = 0; i < this.pages.size(); i++) {
-                Object page = this.pages.get(i);
+            for (Object page : this.pages) {
                 if (page instanceof IEditorPart) {
                     parts.add((IEditorPart) page);
                 }
@@ -134,7 +132,7 @@ public class BundleManifestEditor extends ManifestEditor {
     }
 
     @Override
-    protected PDESourcePage createSourcePage(PDEFormEditor editor, String title, String name, String contextId) {
+    protected IEditorPart createSourcePage(PDEFormEditor editor, String title, String name, String contextId) {
         if (contextId.equals(BundleInputContext.CONTEXT_ID)) {
             return new SpringBundleSourcePage(editor, title, name);
         }
@@ -349,7 +347,7 @@ public class BundleManifestEditor extends ManifestEditor {
         if (FacetUtils.isParProject(getCommonProject())) {
             BundleInputContext context = (BundleInputContext) getContextManager().findContext(BundleInputContext.CONTEXT_ID);
             if (context != null) {
-                IBundleModel bundleModel = (IBundleModel) context.getModel();
+                IBundleModel bundleModel = context.getModel();
                 if (pref != null && pref.equals(IPreferenceConstants.VALUE_USE_NAMES)) {
                     builder.append(bundleModel.getBundle().getHeader(IHeaderConstants.PAR_NAME));
                 }

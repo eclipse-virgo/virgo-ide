@@ -11,14 +11,8 @@
 package org.eclipse.virgo.ide.ui.editors;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
-import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IMarker;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -43,9 +37,6 @@ import org.eclipse.pde.internal.ui.editor.PDEFormPage;
 import org.eclipse.pde.internal.ui.util.SharedLabelProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
@@ -60,8 +51,8 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.forms.widgets.TableWrapData;
-import org.eclipse.virgo.ide.bundlor.internal.core.BundlorCorePlugin;
-import org.eclipse.virgo.ide.bundlor.ui.BundlorUiPlugin;
+//import org.eclipse.virgo.ide.bundlor.internal.core.BundlorCorePlugin;
+//import org.eclipse.virgo.ide.bundlor.ui.BundlorUiPlugin;
 import org.eclipse.virgo.ide.export.BundleExportWizard;
 import org.eclipse.virgo.ide.jdt.internal.core.classpath.ServerClasspathContainerUpdateJob;
 import org.eclipse.virgo.ide.manifest.internal.core.BundleManifestManager;
@@ -177,58 +168,65 @@ public class BundleOverviewPage extends PDEFormPage implements IHyperlinkListene
         Composite container = createStaticSectionClient(toolkit, section);
 
         FormText noteText = createClient(container,
-            "<form><p>OSGi dependency meta data in the MANIFEST.MF file can automatically be updated based on dependencies expressed in source code artifacts.</p><p>Java source files, Spring XML configuration, JPA persistence.xml and Hibernate .hbm mapping files will be analysed. The process will create Import-Package and Export-Package headers.</p><li style=\"image\" value=\"manifest\" bindent=\"5\"><a href=\"generate\">Update MANIFEST.MF</a>: automatically generate MANIFEST.MF file based on dependencies in source code artifacts.</li></form>",
+            // "<form><p>OSGi dependency meta data in the MANIFEST.MF file can automatically be updated based on
+            // dependencies expressed in source code artifacts.</p><p>Java source files, Spring XML configuration, JPA
+            // persistence.xml and Hibernate .hbm mapping files will be analysed. The process will create Import-Package
+            // and Export-Package headers.</p><li style=\"image\" value=\"manifest\" bindent=\"5\"><a
+            // href=\"generate\">Update MANIFEST.MF</a>: automatically generate MANIFEST.MF file based on dependencies
+            // in source code artifacts.</li></form>",
+            "<form><p>OSGi dependency meta data in the MANIFEST.MF file can automatically be updated based on dependencies expressed in source code artifacts.</p><p>Java source files, Spring XML configuration, JPA persistence.xml and Hibernate .hbm mapping files will be analysed. The process will create Import-Package and Export-Package headers.</p></form>",
             true, toolkit);
         noteText.setImage("manifest", ServerIdeUiPlugin.getImage("full/obj16/osgi_obj.gif")); //$NON-NLS-1$
         noteText.addHyperlinkListener(this);
 
-        Button button = toolkit.createButton(container, "Automatically update MANIFEST.MF file in background.", SWT.CHECK);
-        button.addSelectionListener(new SelectionAdapter() {
-
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                IRunnableWithProgress op = new WorkspaceModifyOperation() {
-
-                    @Override
-                    protected void execute(IProgressMonitor monitor) throws CoreException, InterruptedException {
-                        IProject project = BundleOverviewPage.this.resource.getProject();
-                        IProjectDescription description = project.getDescription();
-                        try {
-                            List<ICommand> cmds = Arrays.asList(description.getBuildSpec());
-                            List<ICommand> newCmds = new ArrayList<ICommand>(cmds);
-                            if (BundlorUiPlugin.isBundlorBuilding(project)) {
-                                for (ICommand config : cmds) {
-                                    if (config.getBuilderName().equals(BundlorCorePlugin.BUILDER_ID)) {
-                                        newCmds.remove(config);
-                                    }
-                                }
-                            } else {
-                                ICommand command = project.getDescription().newCommand();
-                                command.setBuilderName(BundlorCorePlugin.BUILDER_ID);
-                                newCmds.add(command);
-                            }
-                            if (!cmds.equals(newCmds)) {
-                                description.setBuildSpec(newCmds.toArray(new ICommand[] {}));
-                                project.setDescription(description, monitor);
-                            }
-                        } catch (CoreException e1) {
-                        }
-                    }
-                };
-                try {
-                    PlatformUI.getWorkbench().getProgressService().runInUI(PDEPlugin.getActiveWorkbenchWindow(), op,
-                        PDEPlugin.getWorkspace().getRoot());
-                } catch (InvocationTargetException e1) {
-                } catch (InterruptedException e1) {
-                }
-
-            }
-        });
-        TableWrapData data = new TableWrapData(TableWrapData.FILL_GRAB);
-        data.indent = 5;
-        button.setLayoutData(data);
-        boolean building = this.resource != null && BundlorUiPlugin.isBundlorBuilding(this.resource.getProject());
-        button.setSelection(building);
+        // Button button = toolkit.createButton(container, "Automatically update MANIFEST.MF file in background.",
+        // SWT.CHECK);
+        // button.addSelectionListener(new SelectionAdapter() {
+        //
+        // @Override
+        // public void widgetSelected(SelectionEvent e) {
+        // IRunnableWithProgress op = new WorkspaceModifyOperation() {
+        //
+        // @Override
+        // protected void execute(IProgressMonitor monitor) throws CoreException, InterruptedException {
+        // IProject project = BundleOverviewPage.this.resource.getProject();
+        // IProjectDescription description = project.getDescription();
+        // try {
+        // List<ICommand> cmds = Arrays.asList(description.getBuildSpec());
+        // List<ICommand> newCmds = new ArrayList<ICommand>(cmds);
+        // if (BundlorUiPlugin.isBundlorBuilding(project)) {
+        // for (ICommand config : cmds) {
+        // if (config.getBuilderName().equals(BundlorCorePlugin.BUILDER_ID)) {
+        // newCmds.remove(config);
+        // }
+        // }
+        // } else {
+        // ICommand command = project.getDescription().newCommand();
+        // command.setBuilderName(BundlorCorePlugin.BUILDER_ID);
+        // newCmds.add(command);
+        // }
+        // if (!cmds.equals(newCmds)) {
+        // description.setBuildSpec(newCmds.toArray(new ICommand[] {}));
+        // project.setDescription(description, monitor);
+        // }
+        // } catch (CoreException e1) {
+        // }
+        // }
+        // };
+        // try {
+        // PlatformUI.getWorkbench().getProgressService().runInUI(PDEPlugin.getActiveWorkbenchWindow(), op,
+        // PDEPlugin.getWorkspace().getRoot());
+        // } catch (InvocationTargetException e1) {
+        // } catch (InterruptedException e1) {
+        // }
+        //
+        // }
+        // });
+        // TableWrapData data = new TableWrapData(TableWrapData.FILL_GRAB);
+        // data.indent = 5;
+        // button.setLayoutData(data);
+        // boolean building = this.resource != null && BundlorUiPlugin.isBundlorBuilding(this.resource.getProject());
+        // button.setSelection(building);
 
         toolkit.createLabel(container, "");
 
@@ -290,8 +288,8 @@ public class BundleOverviewPage extends PDEFormPage implements IHyperlinkListene
             } catch (InvocationTargetException e1) {
             } catch (InterruptedException e1) {
             }
-        } else if (e.getHref().equals("generate")) {
-            BundlorUiPlugin.runBundlorOnProject(JavaCore.create(this.resource.getProject()));
+            // } else if (e.getHref().equals("generate")) {
+            // BundlorUiPlugin.runBundlorOnProject(JavaCore.create(this.resource.getProject()));
         } else if (e.getHref().equals("exportbundle")) {
             Display.getDefault().asyncExec(new Runnable() {
 

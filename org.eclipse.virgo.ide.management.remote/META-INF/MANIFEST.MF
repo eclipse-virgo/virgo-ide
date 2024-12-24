@@ -18,4 +18,3 @@ Import-Package: org.eclipse.gemini.blueprint;resolution:=optional,
 Require-Bundle: org.apache.felix.gogo.runtime;bundle-version="[0.10.0,1.0.0)";resolution:=optional
 Bundle-Vendor: Eclipse.org - Virgo
 Export-Package: org.eclipse.virgo.ide.management.remote
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7

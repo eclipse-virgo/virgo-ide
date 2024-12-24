@@ -19,7 +19,7 @@ Require-Bundle: org.eclipse.core.filesystem,
  org.eclipse.swtbot.swt.finder,
  org.eclipse.virgo.ide.tests.util,
  org.eclipse.virgo.ide.runtime.core,
- org.hamcrest.core;bundle-version="[1.3.0,2.0.0)",
+ org.hamcrest.core,
  slf4j.api
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-17
