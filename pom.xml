@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
 	xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
@@ -14,7 +15,8 @@
 		<site-dir></site-dir>
 		<skip-promote>true</skip-promote>
 		<test.osvmargs></test.osvmargs>
-		<tycho-version>3.0.5</tycho-version>
+<!--		<tycho-version>3.0.1</tycho-version>-->
+		<tycho-version>4.0.10</tycho-version>
 		<signer-version>1.1.5</signer-version>
 	</properties>
 
@@ -54,7 +56,7 @@
 	</modules>
 
 	<profiles>
-		 <profile>
+		<profile>
 			<id>jenkins.eclipse.org</id>
 			<activation>
 				<property>
@@ -63,8 +65,10 @@
 				</property>
 			</activation>
 			<properties>
-				<archive-dir>/home/data/httpd/download.eclipse.org/virgo/snapshot/IDE/drops</archive-dir>
-				<site-dir>/home/data/httpd/download.eclipse.org/virgo/snapshot/IDE</site-dir>
+				<archive-dir>
+					/home/data/httpd/download.eclipse.org/virgo/snapshot/IDE/drops</archive-dir>
+				<site-dir>
+					/home/data/httpd/download.eclipse.org/virgo/snapshot/IDE</site-dir>
 				<skip-promote>false</skip-promote>
 			</properties>
 			<build>
@@ -75,7 +79,7 @@
 						<version>${tycho-version}</version>
 						<configuration>
 							<includePackedArtifacts>false</includePackedArtifacts>
-							<executionEnvironment>JavaSE-17</executionEnvironment>
+							<executionEnvironment>JavaSE-21</executionEnvironment>
 							<resolveWithExecutionEnvironmentConstraints>false</resolveWithExecutionEnvironmentConstraints>
 						</configuration>
 					</plugin>
@@ -98,7 +102,7 @@
 					</plugin>
 				</plugins>
 			</build>
-		</profile> 
+		</profile>
 		<profile>
 			<id>osx</id>
 			<activation>
@@ -115,30 +119,45 @@
 
 	<repositories>
 		<repository>
+			<id>GEF Classic</id>
+			<layout>p2</layout>
+			<url>https://download.eclipse.org/tools/gef/classic/release/3.21.0</url>
+		</repository>
+		<repository>
 			<id>eclipse</id>
 			<layout>p2</layout>
-			<url>https://download.eclipse.org/releases/2023-09/</url>
+			<url>https://download.eclipse.org/releases/2024-12/</url>
 		</repository>
 		<repository>
 			<id>m2e</id>
 			<layout>p2</layout>
 			<url>https://download.eclipse.org/technology/m2e/releases/latest</url>
 		</repository>
+		<!--		<repository>-->
+		<!--			<id>orbit_2303</id>-->
+		<!--			<layout>p2</layout>-->
+		<!--
+		<url>https://download.eclipse.org/tools/orbit/downloads/drops/R20230302014618/repository/</url>-->
+		<!--		</repository>-->
 		<repository>
-			<id>orbit_2303</id>
+			<id>orbit_202211</id>
 			<layout>p2</layout>
-			<url>https://download.eclipse.org/tools/orbit/downloads/drops/R20230302014618/repository/</url>
+			<url>
+				https://download.eclipse.org/tools/orbit/downloads/drops/R20221123021534/repository</url>
 		</repository>
 		<repository>
-			<id>orbit_22</id>
+			<id>orbit_202203</id>
 			<layout>p2</layout>
-			<url>https://download.eclipse.org/tools/orbit/downloads/drops/R20220302172233/repository</url>
+			<url>
+				https://download.eclipse.org/tools/orbit/downloads/drops/R20220302172233/repository</url>
 		</repository>
 
 		<repository>
 			<id>orbit_202305</id>
 			<layout>p2</layout>
-			<url>https://download.eclipse.org/tools/orbit/downloads/drops/R20230531010532/repository</url>
+
+			<url>
+				https://download.eclipse.org/tools/orbit/downloads/drops/R20230531010532/repository</url>
 		</repository>
 
 		<repository>
@@ -154,7 +173,7 @@
 		<repository>
 			<id>bundlor</id>
 			<layout>p2</layout>
-			<url>file:./bundlor/repo/</url>
+			<url>${project.baseUri}../bundlor/repo</url>
 		</repository>
 		<repository>
 			<id>virgo-release</id>
@@ -165,7 +184,8 @@
 
 	<pluginRepositories>
 		<pluginRepository>
-			<!-- Common Build Infrastructure - contains Maven plug-ins for signing -->
+			<!-- Common Build Infrastructure - contains Maven plug-ins for
+			signing -->
 			<id>cbi</id>
 			<url>https://repo.eclipse.org/content/repositories/cbi-releases/</url>
 		</pluginRepository>
@@ -205,7 +225,7 @@
 				<artifactId>target-platform-configuration</artifactId>
 				<version>${tycho-version}</version>
 				<configuration>
-					<executionEnvironment>JavaSE-17</executionEnvironment>
+					<executionEnvironment>JavaSE-21</executionEnvironment>
 					<pomDependencies>consider</pomDependencies>
 					<environments>
 						<environment>

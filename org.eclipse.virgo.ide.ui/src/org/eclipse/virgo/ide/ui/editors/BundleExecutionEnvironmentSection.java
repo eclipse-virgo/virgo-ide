@@ -12,6 +12,7 @@ package org.eclipse.virgo.ide.ui.editors;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jdt.launching.environments.IExecutionEnvironment;
@@ -119,7 +120,8 @@ public class BundleExecutionEnvironmentSection extends TableSection {
                 IBundle bundle = model.getBundle();
                 IManifestHeader header = bundle.getManifestHeader(Constants.BUNDLE_REQUIREDEXECUTIONENVIRONMENT);
                 if (header instanceof RequiredExecutionEnvironmentHeader) {
-                    return ((RequiredExecutionEnvironmentHeader) header).getEnvironments();
+                    RequiredExecutionEnvironmentHeader header2 = (RequiredExecutionEnvironmentHeader) header;
+                    return header2.getEnvironments().toArray(new Object[0]);
                 }
             }
             return new Object[0];
@@ -129,7 +131,7 @@ public class BundleExecutionEnvironmentSection extends TableSection {
     public BundleExecutionEnvironmentSection(PDEFormPage page, Composite parent) {
         super(page, parent, Section.DESCRIPTION,
             new String[] { PDEUIMessages.RequiredExecutionEnvironmentSection_add, PDEUIMessages.RequiredExecutionEnvironmentSection_remove,
-                PDEUIMessages.RequiredExecutionEnvironmentSection_up, PDEUIMessages.RequiredExecutionEnvironmentSection_down });
+                PDEUIMessages.ManifestEditor_LibrarySection_up, PDEUIMessages.ManifestEditor_LibrarySection_down });
         createClient(getSection(), page.getEditor().getToolkit());
     }
 
@@ -287,8 +289,11 @@ public class BundleExecutionEnvironmentSection extends TableSection {
             Iterator iter = ssel.iterator();
             while (iter.hasNext()) {
                 Object object = iter.next();
-                if (object instanceof ExecutionEnvironment) {
-                    getHeader().removeExecutionEnvironment((ExecutionEnvironment) object);
+                // if (object instanceof ExecutionEnvironment) {
+                // getHeader().removeExecutionEnvironment((ExecutionEnvironment) object);
+                // }
+                if (object instanceof String) {
+                    getHeader().removeExecutionEnvironment(object.toString());
                 }
             }
         }
@@ -329,7 +334,11 @@ public class BundleExecutionEnvironmentSection extends TableSection {
             getBundle().setHeader(Constants.BUNDLE_REQUIREDEXECUTIONENVIRONMENT, buffer.toString());
         } else {
             RequiredExecutionEnvironmentHeader ee = (RequiredExecutionEnvironmentHeader) header;
-            ee.addExecutionEnvironments(result);
+            List<String> ees = new ArrayList<String>();
+            for (Object object : result) {
+                ees.add(object.toString());
+            }
+            ee.addExecutionEnvironments(ees);
         }
     }
 
@@ -349,9 +358,9 @@ public class BundleExecutionEnvironmentSection extends TableSection {
             return envs;
         }
         ArrayList list = new ArrayList();
-        for (int i = 0; i < envs.length; i++) {
-            if (!header.hasExecutionEnvironment(envs[i])) {
-                list.add(envs[i]);
+        for (IExecutionEnvironment env : envs) {
+            if (!header.getEnvironments().contains(env)) {
+                list.add(env);
             }
         }
         return list.toArray();

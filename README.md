@@ -12,10 +12,7 @@ The Virgo Web Server from EclipseRT is a completely module-based Java applicatio
 
 ## Installation instructions:
 
-Install the Virgo Tools feature in Eclipse via the usual  _Help -> Install New Software_  dialog.
-Once installed in Eclipse, your Eclipse will offer a new perspective dedicated to the Virgo Web Server as well as new Wizards for creating server runtimes and projects.
-
-Please refer to the included documentation available via the Eclipse  _Help_  menu to find out how to use the Virgo Tools.
+See https://github.com/eclipse-virgo/virgo-ide/wiki/About-the-Virgo-Tools for installation instructions
 
 
 ## Contributing:
@@ -33,16 +30,6 @@ Information regarding source code management, builds, coding standards, and more
 - https://projects.eclipse.org/projects/rt.virgo/developer
 
 
-## Contact:
+## Contact / Bug reporting:
 
-Contact the project developers via the project's "dev" list.
-
-- https://dev.eclipse.org/mailman/listinfo/virgo-dev
-
-## Bug reporting:
-
-While this project previously used Eclipse Bugzilla to track ongoing development and issues
-
-- https://bugs.eclipse.org/bugs/buglist.cgi?product=Virgo
-
-new issues/discussions are now created directly in github.
+Contact the project developers via this github project issues

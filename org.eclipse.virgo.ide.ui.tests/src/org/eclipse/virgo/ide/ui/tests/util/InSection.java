@@ -20,7 +20,7 @@ import org.eclipse.swtbot.swt.finder.utils.SWTUtils;
 import org.eclipse.swtbot.swt.finder.utils.TreePath;
 import org.eclipse.ui.forms.widgets.Section;
 import org.hamcrest.Description;
-import org.hamcrest.Factory;
+//import org.hamcrest.Factory;
 import org.hamcrest.Matcher;
 
 /**
@@ -28,12 +28,12 @@ import org.hamcrest.Matcher;
  */
 public class InSection<T extends Widget> extends AbstractMatcher<T> {
 
-    @Factory
+    // @Factory
     public static <T extends Widget> Matcher<T> inSection(Matcher<?> matcher) {
         return new InSection<T>(matcher);
     }
 
-    @Factory
+    // @Factory
     public static <T extends Widget> Matcher<T> inSection(String labelText) {
         return new InSection<T>(labelText);
     }

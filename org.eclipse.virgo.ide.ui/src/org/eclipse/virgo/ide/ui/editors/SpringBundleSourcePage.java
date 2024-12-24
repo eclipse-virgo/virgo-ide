@@ -12,7 +12,6 @@ package org.eclipse.virgo.ide.ui.editors;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -298,7 +297,7 @@ public class SpringBundleSourcePage extends BundleSourcePage {
             } else if (parent instanceof ExportPackageHeader) {
                 return ((ExportPackageHeader) parent).getPackages();
             } else if (parent instanceof RequiredExecutionEnvironmentHeader) {
-                return ((RequiredExecutionEnvironmentHeader) parent).getEnvironments();
+                return ((RequiredExecutionEnvironmentHeader) parent).getEnvironments().toArray(new Object[0]);
             } else if (parent instanceof RequireBundleHeader) {
                 return ((RequireBundleHeader) parent).getRequiredBundles();
             } else if (parent instanceof BundleClasspathHeader) {
@@ -333,8 +332,8 @@ public class SpringBundleSourcePage extends BundleSourcePage {
                 BundleModel model = (BundleModel) parent;
                 Map manifest = ((Bundle) model.getBundle()).getHeaders();
                 ArrayList keys = new ArrayList();
-                for (Iterator elements = manifest.keySet().iterator(); elements.hasNext();) {
-                    IDocumentKey key = (IDocumentKey) manifest.get(elements.next());
+                for (Object element : manifest.keySet()) {
+                    IDocumentKey key = (IDocumentKey) manifest.get(element);
                     if (key.getOffset() > -1) {
                         keys.add(key);
                     }

@@ -43,7 +43,6 @@ import org.eclipse.pde.core.plugin.ModelEntry;
 import org.eclipse.pde.core.plugin.PluginRegistry;
 import org.eclipse.pde.internal.core.ICoreConstants;
 import org.eclipse.pde.internal.core.ibundle.IBundleModel;
-import org.eclipse.pde.internal.core.util.HeaderMap;
 import org.eclipse.pde.internal.core.util.PDEJavaHelper;
 import org.eclipse.pde.internal.ui.PDEPluginImages;
 import org.eclipse.pde.internal.ui.editor.PDEFormEditor;
@@ -646,9 +645,9 @@ public class AbstractPdeManifestContentAssistProcessor extends TypePackageComple
             set = new HashSet(0);
         }
         int length = currentValue.length();
-        for (int i = 0; i < fExecEnvs.length; i++) {
-            if (fExecEnvs[i].regionMatches(true, 0, currentValue, 0, length) && !set.contains(fExecEnvs[i])) {
-                completions.add(new BundleTypeCompletionProposal(fExecEnvs[i], getImage(F_TYPE_EXEC_ENV), fExecEnvs[i], offset - length, length));
+        for (String fExecEnv : fExecEnvs) {
+            if (fExecEnv.regionMatches(true, 0, currentValue, 0, length) && !set.contains(fExecEnv)) {
+                completions.add(new BundleTypeCompletionProposal(fExecEnv, getImage(F_TYPE_EXEC_ENV), fExecEnv, offset - length, length));
             }
         }
         return (ICompletionProposal[]) completions.toArray(new ICompletionProposal[completions.size()]);
@@ -845,9 +844,9 @@ public class AbstractPdeManifestContentAssistProcessor extends TypePackageComple
     }
 
     protected void dispose() {
-        for (int i = 0; i < this.fImages.length; i++) {
-            if (this.fImages[i] != null && !this.fImages[i].isDisposed()) {
-                this.fImages[i].dispose();
+        for (Image fImage : this.fImages) {
+            if (fImage != null && !fImage.isDisposed()) {
+                fImage.dispose();
             }
         }
     }
