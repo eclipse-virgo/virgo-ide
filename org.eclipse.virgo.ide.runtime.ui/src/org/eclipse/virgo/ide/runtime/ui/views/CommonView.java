@@ -90,7 +90,7 @@ public abstract class CommonView extends CommonNavigator implements ISelectionLi
             setDescription(PDEUIMessages.DependenciesView_ShowListAction_description);
             setToolTipText(PDEUIMessages.DependenciesView_ShowListAction_tooltip);
             setImageDescriptor(PDEPluginImages.DESC_FLAT_LAYOUT);
-            setDisabledImageDescriptor(PDEPluginImages.DESC_FLAT_LAYOUT_DISABLED);
+            // setDisabledImageDescriptor(PDEPluginImages.DESC_FLAT_LAYOUT_DISABLED);
         }
 
         /*
@@ -116,7 +116,7 @@ public abstract class CommonView extends CommonNavigator implements ISelectionLi
             setDescription(PDEUIMessages.DependenciesView_ShowTreeAction_description);
             setToolTipText(PDEUIMessages.DependenciesView_ShowTreeAction_tooltip);
             setImageDescriptor(PDEPluginImages.DESC_HIERARCHICAL_LAYOUT);
-            setDisabledImageDescriptor(PDEPluginImages.DESC_HIERARCHICAL_LAYOUT_DISABLED);
+            // setDisabledImageDescriptor(PDEPluginImages.DESC_HIERARCHICAL_LAYOUT_DISABLED);
         }
 
         /*
@@ -142,7 +142,7 @@ public abstract class CommonView extends CommonNavigator implements ISelectionLi
             setDescription(Messages.RepositoryBrowserEditorPage_RefreshMessage);
             setToolTipText(Messages.RepositoryBrowserEditorPage_RefreshMessage);
             setImageDescriptor(PDEPluginImages.DESC_REFRESH);
-            setDisabledImageDescriptor(PDEPluginImages.DESC_REFRESH_DISABLED);
+            // setDisabledImageDescriptor(PDEPluginImages.DESC_REFRESH_DISABLED);
         }
 
         /*
