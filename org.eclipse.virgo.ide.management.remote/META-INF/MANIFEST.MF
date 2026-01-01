@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-Name: Virgo Server Remote Management Bundle
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: org.eclipse.virgo.ide.management.remote
-Bundle-Version: 1.6.0.qualifier
+Bundle-Version: 1.6.251200.qualifier
 Import-Package: org.eclipse.gemini.blueprint;resolution:=optional,
  org.eclipse.gemini.blueprint.util;resolution:=optional,
  org.eclipse.osgi.framework.console,
